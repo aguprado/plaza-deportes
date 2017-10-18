@@ -1,0 +1,16 @@
+body {font-family: 'Lato', sans-serif !important}
+.no-padding {
+    padding: 0 !important;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+input {
+    outline: none !important;
+}

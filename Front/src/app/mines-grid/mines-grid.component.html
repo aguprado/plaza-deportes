@@ -1,0 +1,18 @@
+
+<div *ngIf="status > 0" class="container col-xs-8 pull-right text-center">
+    <div class="grid no-padding" [ngStyle]="{'width': (grid.columns*34+4)+'px','height': (grid.rows*34+49)+'px'}">
+        <div class="col-xs-12 no-padding game-info">
+        <div class="col-xs-4 pull-left text-center">{{grid.mines}}</div>
+        <div class="col-xs-4 no-padding fa-container"><i class="fa fa-smile-o" aria-hidden="true"></i></div>
+        <div class="col-xs-4 pull-right text-center">{{seconds}}</div>
+        </div>
+        <div *ngFor="let cell of grid.cells;" class="cell" [ngClass]="{'open': cell.status}" (contextmenu)="onCellRightClick(cell)" (click)="onCellClick(cell)" [ngStyle]="{'order': cell.row}">
+            <div *ngIf="cell.flag"><i class="fa fa-flag" aria-hidden="true"></i></div>
+            <div *ngIf="!cell.flag && cell.mined && cell.status" [ngStyle]="{'color': cell.color}"><i class="fa fa-asterisk" aria-hidden="true"></i></div>
+            <span *ngIf="!cell.flag && !cell.mined && cell.status" [ngStyle]="{'color': cell.color}">{{cell.minedNeighbors || ''}}</span>
+        </div>    
+        <input class="col-xs-12 no-padding btn btn-info" (click)="saveGame()" style="order: 9999; margin-top:20px; height: 34px" value="Save Game"/>
+    </div>
+</div>
+      
+      

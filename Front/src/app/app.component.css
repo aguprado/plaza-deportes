@@ -1,0 +1,17 @@
+
+input {
+    margin: 10px 0;
+}
+
+button { 
+    margin: 0 2px;
+}
+
+ul {
+    list-style: none
+}
+
+li {
+    margin: 5px 0;
+    line-height: 32px;
+}

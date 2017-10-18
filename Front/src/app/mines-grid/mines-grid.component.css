@@ -1,0 +1,49 @@
+
+.container {
+    margin-top: 30px;
+}
+
+.game-info {
+    font-size: 20px;
+    height: 45px;
+    line-height: 45px;
+    display: inline-block;
+}
+
+.fa-container {
+    border-right: 2px solid #eee;
+    border-left: 2px solid #eee;
+    height: 100%;
+}
+
+.fa-smile-o {
+    font-size: 40px;
+    line-height: 45px;
+}
+
+.grid {
+    margin: 0 auto;
+    display:flex; 
+    flex-wrap: wrap;
+    border: 2px solid #eee;
+    border-radius: 3px;
+    overflow: visible;
+}
+
+.cell {
+    width: 34px; 
+    height:34px;
+    line-height: 33px;    
+    font-weight: 700;
+    background: rgba(112, 128, 144, 0.2);
+    cursor: pointer;
+    border: 1px solid #eee;
+}
+
+.cell.open {
+    background: white;
+}
+
+.cell.red {
+    color: red;
+}

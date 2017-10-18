@@ -1,0 +1,12 @@
+{
+  "name": "minesweeper",
+  "description": "Minesweeper Server",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "express": "*",
+    "mongoose": "*",
+    "body-parser": "*",
+    "url": "*"
+  }
+}

@@ -1,0 +1,20 @@
+<div class="col-xs-4 pull-left">
+  <h3>Welcome to MineSweeper</h3>
+  <form (submit)="startGame()">
+    <label class="no-padding col-xs-4 pull-left">Rows:</label><input class="form-control" min="5" max="99" [(ngModel)]="rows" name="rows" type="number" placeholder="Rows" required/>
+    <label class="no-padding col-xs-4 pull-left">Columns:</label><input class="form-control" min="5" max="99" [(ngModel)]="columns" name="columns" type="number" placeholder="Columns" required/>
+    <label class="no-padding col-xs-4 pull-left">Mines:</label><input class="form-control" min="1" [(ngModel)]="mines" name="mines" type="number" placeholder="Mines" required/>
+    <input class="col-xs-12 btn btn-success" type="submit" value="Start"/>
+  </form>
+  <input class="col-xs-12 btn btn-info" (click)="showGames()" value="Show Games"/>
+  <ul class="no-padding">
+    <li class="no-padding col-xs-12" *ngFor="let game of games">
+      <span>{{toUTCString(game.created)}}</span>
+      <button class="pull-right btn btn-danger" (click)="deleteGame(game._id)">Delete</button>
+      <button class="pull-right btn btn-info" (click)="loadGame(game._id)">Load</button>
+    </li>
+  </ul>
+</div>
+<mines-grid [grid]="grid | async"></mines-grid>
+
+
