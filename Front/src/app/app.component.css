@@ -7,11 +7,6 @@ button {
     margin: 0 2px;
 }
 
-ul {
-    list-style: none
-}
-
-li {
-    margin: 5px 0;
-    line-height: 32px;
+h4 {
+    color: gray;
 }

@@ -1,14 +1,14 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Headers, RequestOptions, Http, Response } from '@angular/http';
-import { Store } from '@ngrx/store';
-import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs';
-import { AppState } from '../reducers';
+import 'rxjs/add/operator/toPromise';
+import { Group } from '../models/Group';
 
 @Injectable()
 export class ApiService {
 
-    apiUrl = 'http://52.67.131.86:8080';
+    //apiUrl = 'http://52.67.131.86:8080';
+    apiUrl = 'http://localhost:8080';
     constructor(private http: Http) {}
     
     options = () => {
@@ -16,9 +16,8 @@ export class ApiService {
         return new RequestOptions({headers: headers});
     }
 
-    // sends the current state to the api by post
-    saveGame(game:AppState): Promise<any> {
-        let body = JSON.stringify(game);
+    createGroup(group: Group): Promise<any> {
+        let body = JSON.stringify(group);
         let url = this.apiUrl+'/game';
         return this.http.post(url, body, this.options()).toPromise()
             .then(response => {
@@ -26,28 +25,43 @@ export class ApiService {
             }).catch(this.handleError);
     }
 
-    //deletes the game by id from the database
-    deleteGame(id): Promise<any> {
-        let url = this.apiUrl+'/game?id='+id;
+    deleteGroup(id): Promise<any> {
+        let url = this.apiUrl+'/group?id='+id;
         return this.http.delete(url, this.options()).toPromise()
             .then(response => {
                 return response.json();
             }).catch(this.handleError);
     }
 
-    //list all the games in the database
-    showGames(): Promise<any> {
-        let url = this.apiUrl+'/games';
+    loadGroups(): Promise<any> {
+        let url = this.apiUrl+'/groups';
         return this.http.get(url, this.options()).toPromise()
             .then(response => {
                 return response.json();
             }).catch(this.handleError);
     }
-        
-    //fetches the game by id from the database
-    loadGame(id: string): Promise<any> {
-        let url = this.apiUrl+'/game?id='+id;
+    
+    loadGroup(id: string): Promise<any> {
+        let url = this.apiUrl+'/group?id='+id;
         return this.http.get(url, this.options())
+            .toPromise().then(response => {
+                return response.json();
+            }).catch(this.handleError);
+    }
+    
+    inscribirse(ci: string, id: string): Promise<any> {
+        let body = JSON.stringify({ci: ci, id: id});
+        let url = this.apiUrl+'/inscripcion';
+        return this.http.post(url, body, this.options())
+            .toPromise().then(response => {
+                return response.json();
+            }).catch(this.handleError);
+    }
+        
+    desinscribirse(ci: string, id: string, codigo: string): Promise<any> {
+        let body = JSON.stringify({ci: ci, id: id, codigo: codigo});
+        let url = this.apiUrl+'/inscripcion?id='+id+'&ci='+ci+'&codigo='+codigo;
+        return this.http.delete(url, this.options())
             .toPromise().then(response => {
                 return response.json();
             }).catch(this.handleError);

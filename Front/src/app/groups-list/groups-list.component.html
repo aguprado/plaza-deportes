@@ -1,0 +1,37 @@
+<div class="col-xs-2 pull-left">
+    <ul>
+        <li><button *ngIf="logged" class="btn btn-success" (click)="crearGrupo(group.id)">Crear nuevo grupo</button></li>
+        <li><button class="btn btn-info" (click)="desinscribirseGrupo(group.id)">Desinscribirse a grupo</button></li>
+        <li><button *ngIf="logged" class="btn btn-danger" (click)="logout()">Cerrar sesión</button></li>
+    </ul>
+</div>
+<div class="col-xs-10 pull-right">
+  <h4>Lista de grupos disponibles</h4>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Cupos</th>
+        <th *ngIf="logged" colspan="4">Acciones</th>
+        <th *ngIf="!logged" colspan="1">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngIf="!groups || !groups.length"><td colspan="9">No hay grupos disponibles</td></tr>
+        <tr *ngFor="let group of groups">
+            <td>{{group.nombre}}</td>
+            <td>{{group.descripcion}}</td>
+            <td>{{group.fecha}}</td>
+            <td>{{group.hora}}</td>
+            <td>{{group.disponibles}}/{{group.cupos}}</td>
+            <td><button class="btn btn-success" (click)="inscribirseGrupo(group.id)">Inscribirse</button></td>
+            <td *ngIf="logged"><button class="btn btn-success" (click)="inscriptosGrupo(group.id)">Inscriptos</button></td>
+            <td *ngIf="logged"><button class="btn btn-info" (click)="modificarGrupo(group.id)">Modificar</button></td>
+            <td *ngIf="logged"><button class="btn btn-danger" (click)="borrarGrupo(group.id)">Borrar</button></td>
+        </tr>
+    </tbody>
+  </table>
+</div>

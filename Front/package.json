@@ -1,7 +1,7 @@
 {
-  "name": "minesweeper",
+  "name": "plazadeportes",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -21,14 +21,13 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
-    "@ngrx/core": "^1.0.0",
-    "@ngrx/store": "^2.2.2",
-    "@ngrx/effects": "^2.0.3",
     "ngx-bootstrap": "*",
     "bootstrap": "*",
     "core-js": "^2.4.1",
     "rxjs": "^5.4.2",
-    "zone.js": "^0.8.14"
+    "zone.js": "^0.8.14",
+    "crypto-js": "~3.1.9-1",
+    "@types/crypto-js": "~3.1.37"
   },
   "devDependencies": {
     "@angular/cli": "1.3.2",

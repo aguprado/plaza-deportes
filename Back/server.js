@@ -1,11 +1,9 @@
 // Load required packages
 var express 			= require('express');
-var mongoose 			= require('mongoose');
+var mysql   = require('mysql');
 var bodyParser 			= require('body-parser');
 var url                 = require('url');
 
-//connect to db
-mongoose.connect('mongodb://localhost/Mineswepper');
 var app = express();
 app.use(bodyParser.json({}));
 
@@ -18,64 +16,98 @@ app.all('*', function(req, res, next) {
 	next();
 });
 
-var Game = require('./game');
+var database = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    //password : '41842930',
+    password : '',
+    database : 'plazaDeportes'
+});
+
+database.connect();
+
+var user = 'admin';
+var password = '123';
+var token;
 
 // Create our Express router
 var router = express.Router();
 
-//endpoint to get a game by id from db
-router.route('/game')
+router.route('/login')
+    .post(function(req, res) {
+        if (req.body.user == user && req.body.password == password) {
+            let t = 'token';
+            token = t;
+            return res.json({token: t});
+        }
+        res.status(401).send()
+    });
+
+router.route('/logout')
+    .post(function(req, res) {
+        if (req.body.token != token) { return res.status(401).send() };
+        if (req.body.user == user && req.body.password == password) { return res.json(results) }
+        res.status(401).send()
+    });
+
+router.route('/group')
     .get(function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
-        Game.findOne({_id: query.id}).exec(function(err, game){
-            if (err){
-                //logs the error and sends it with status 500
-                console.log(err);
-                res.status(500).send(err);
-            } else{ res.json(game) };
-        });
+        if (query.token != token) { return res.status(401).send() };
+        database.query('SELECT * FROM `group` WHERE id = ?', [query.id], function (err, results, fields) {
+            if (err){ console.log(err); return res.status(500).send(err) };
+            res.json(results);
+        })
     });
 
-//endpoint to delete a game by id from db
-router.route('/game')
+router.route('/group')
     .delete(function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
-        Game.remove({_id: query.id}).exec(function(err, result){
-            if (err){
-                //logs the error and sends it with status 500
-                console.log(err);
-                res.status(500).send(err);
-            } else{ res.json(result) };
-        });
+        if (query.token != token) { return res.status(401).send() };
+        database.query('DELETE FROM `group` WHERE id = ?', [query.id], function (err, results, fields) {
+            if (err){ console.log(err); return res.status(500).send(err) };
+            res.json(results);
+        })
     });
 
-//endpoint to get all games in db
-router.route('/games')
+router.route('/groups')
     .get(function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
-        Game.find({}).exec(function(err, games){
-            if (err){
-                //logs the error and sends it with status 500
-                console.log(err);
-                res.status(500).send(err);
-            } else{ res.json(games) }
+        if (query.token != token) { return res.status(401).send() };
+        database.query('SELECT * FROM `group`', [], function (err, results, fields) {
+            if (err){ console.log(err); return res.status(500).send(err) };
+            res.json(results);
+        })
+    });
+
+router.route('/group')
+    .post(function(req, res) {
+        if (req.body.token != token) { return res.status(401).send() };
+        database.query('INSERT INTO `group` () VALUES ()', [], function (err, results, fields) {
+            if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
+            res.json(results);
         });
     });
 
-//endpoint to post a game to save in db
-router.route('/game')
+router.route('/inscription')
+    .delete(function(req, res) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        database.query('DELETE FROM inscription WHERE id = ?', [query.id], function (err, results, fields) {
+            if (err){ console.log(err); return res.status(500).send(err) };
+            res.json(results);
+        })
+    });
+
+router.route('/inscription')
     .post(function(req, res) {
-        var game = new Game(req.body)
-        game.save(function(err, result){
-            if (err){
-                //logs the error and sends it with status 500
-                console.log(err);
-                res.status(500).send(err);
-            } else{ res.json(result) }
-        });
+        database.query('INSERT INTO inscription () VALUES ()', [], function (err, results, fields) {
+            if (err){ console.log(err); return res.status(500).send(err) };
+            res.json(results);
+        })
     });
 
 //register router
