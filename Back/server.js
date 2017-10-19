@@ -19,8 +19,8 @@ app.all('*', function(req, res, next) {
 var database = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
-    //password : '41842930',
-    password : '',
+    password : '41842930',
+    //password : '',
     database : 'plazadeportes'
 });
 
