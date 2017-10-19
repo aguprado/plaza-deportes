@@ -21,7 +21,7 @@ var database = mysql.createConnection({
     user     : 'root',
     //password : '41842930',
     password : '',
-    database : 'plazaDeportes'
+    database : 'plazadeportes'
 });
 
 database.connect();
