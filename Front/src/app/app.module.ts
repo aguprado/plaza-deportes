@@ -14,6 +14,8 @@ import { NewGroupComponent } from './new-group/new-group.component';
 import { AuthGuard } from './guards/authGuard';
 import { GroupEditComponent } from './group-edit/group-edit.component';
 import { InscripcionComponent } from './inscripcion/inscripcion.component';
+import { DesinscripcionComponent } from './desinscripcion/desinscripcion.component';
+import { InscriptionReportComponent } from './inscription-report/inscription-report.component';
 
 const appRoutes: Routes = [
   { path: 'groups-list', component: GroupsListComponent },
@@ -21,6 +23,8 @@ const appRoutes: Routes = [
   { path: 'group-detail/:id', component: GroupDetailComponent, canActivate: [AuthGuard] },
   { path: 'group-edit/:id', component: GroupEditComponent, canActivate: [AuthGuard] },
   { path: 'group-enroll/:id', component: InscripcionComponent },
+  { path: 'group-unroll', component: DesinscripcionComponent },
+  { path: 'confirmed/:documento/:idGroup', component: InscriptionReportComponent },
   { path: 'new-group', component: NewGroupComponent, canActivate: [AuthGuard] },
   { path: '', component: GroupsListComponent },
   { path: '**', redirectTo: '' }
@@ -34,7 +38,9 @@ const appRoutes: Routes = [
     LoginComponent,
     NewGroupComponent,
     GroupEditComponent,
-    InscripcionComponent
+    InscripcionComponent,
+    DesinscripcionComponent,
+    InscriptionReportComponent
   ],
   imports: [
     BrowserModule,

@@ -9,7 +9,9 @@ export class ApiService {
 
     //apiUrl = 'http://52.67.131.86:8080';
     apiUrl = 'http://localhost:8080';
-    token = '';
+    token:string = '';
+    ultimaInscripcion: any;
+
     constructor(private http: Http) {}
     
     options = () => {
@@ -84,12 +86,22 @@ export class ApiService {
             }).catch(this.handleError);
     }
     
+    desinscribirse(codigo: number): Promise<any> {
+        let url = this.apiUrl+'/inscripcion?codigo='+codigo;
+        return this.http.delete(url, this.options())
+            .toPromise().then(response => {
+                return response.json();
+            }).catch(this.handleError);
+    }
+    
     inscribirse(inscripcion: any): Promise<any> {
         let body = JSON.stringify(inscripcion);
         let url = this.apiUrl+'/inscripcion';
         return this.http.post(url, body, this.options())
             .toPromise().then(response => {
-                return response.json();
+                let inscripcion = response.json();
+                if (inscripcion) { this.ultimaInscripcion = inscripcion };
+                return inscripcion;
             }).catch(this.handleError);
     }
         
@@ -99,6 +111,10 @@ export class ApiService {
             .toPromise().then(response => {
                 return response.json();
             }).catch(this.handleError);
+    }
+
+    getUltimaInscripcion() {
+        return this.ultimaInscripcion;
     }
 
     //rejects the promise if error in the call

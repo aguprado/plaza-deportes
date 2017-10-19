@@ -176,24 +176,39 @@ router.route('/group')
         });
     });
 
+//admin
 router.route('/inscripcion')
     .delete(function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
-        if (!query.id) { return res.status(400).send() };
-        database.query('DELETE FROM inscription WHERE id = ?', [query.id], function (err, results, fields) {
+        if (!query.id || !query.token) { return res.status(400).send() };
+        validateToken(query.token, (result) => {
+            if (!result) { return res.status(401).send() }; 
+            database.query('DELETE FROM inscription WHERE id = ?', [query.id], function (err, results, fields) {
+                if (err){ console.log(err); return res.status(500).send(err) };
+                res.json(results);
+            });
+        });
+    });
+
+//public
+router.route('/inscripcion/:codigo')
+    .delete(function(req, res) {
+        if (!req.params.codigo) { return res.status(400).send() };
+        database.query('DELETE FROM inscription WHERE codigo = ?', [req.params.codigo], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         })
     });
-    
+
 router.route('/inscripcion')
     .post(function(req, res) {
-        let codigo = randomToken();
+        //random code
+        let codigo = Math.floor(100000 + Math.random() * 900000);
         if (!req.body || !req.body.documento || !req.body.nombre || !req.body.fnacimiento || !req.body.edad || !req.body.idGrupo ) { return res.status(400).send() };
         database.query('INSERT INTO inscripcion (documento, nombre, fnacimiento, edad, idGrupo, codigo) VALUES (?, ?, ?, ?, ?, ?)', [req.body.documento, req.body.nombre, req.body.fnacimiento, req.body.edad, req.body.idGrupo, codigo], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
-            res.json(results);
+            res.json({documento: req.body.documento, nombre: req.body.nombre, fnacimiento: req.body.fnacimiento, edad: req.body.edad, idGrupo: req.body.idGrupo, codigo: codigo});
         })
     });
 

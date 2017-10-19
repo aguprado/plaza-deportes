@@ -1,0 +1,20 @@
+<div class="col-xs-10 col-xs-offset-1 container" [style.height]="innerHeight">
+    <div class="col-xs-2">
+      <h4 class="pull-left">Desinscribirse a un grupo</h4>
+      <p>
+        Para desinscribirse a un grupo ingresa el código que se te dio al momento de la inscripción
+      </p>
+    </div>
+    <form class="col-xs-8 col-xs-offset-1" (submit)="confirmarDesinscripcion()" ngNativeValidate>
+      <div class="col-xs-12 form-group">
+          <label class="col-xs-4">Código:</label>
+          <input class="form-control col-xs-6" type="number" required name="codigo" placeholder="Ingesa el código" maxlength="100" [(ngModel)]="codigo"/>
+      </div>
+      <div class="col-xs-12 form-group">
+        <input type="submit" value="Confirmar" class="form-control btn btn-success"/>
+      </div>
+      <div class="col-xs-12 form-group">
+        <input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/>
+      </div>
+    </form>
+  </div>

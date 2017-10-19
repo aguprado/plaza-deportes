@@ -32,7 +32,7 @@ export class InscripcionComponent implements OnInit {
 
   confirmarInscripcion() {
     this.apiService.inscribirse(this.inscripcion).then(response => {
-        debugger;
+      this.router.navigate(['/confirmed', this.inscripcion.documento, this.inscripcion.idGrupo]);
     });
   }
 

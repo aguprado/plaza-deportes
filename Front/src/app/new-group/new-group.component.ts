@@ -11,13 +11,16 @@ import { Router } from '@angular/router';
 })
 export class NewGroupComponent {
 
-  newGroup = {nombre: null, descripcion: null, dias: null, horarios: null, cupos: null};
-  constructor(private apiService: ApiService, private router: Router) { }
+  newGroup: {nombre: string, descripcion: string, dias: string, horarios: string, cupos: number};
+  
+  constructor(private apiService: ApiService, private router: Router) { 
+    this.newGroup = {nombre: null, descripcion: null, dias: null, horarios: null, cupos: 0};
+  }
 
   crearGrupo() {
     let group: Group = new Group(this.newGroup);
     this.apiService.createGroup(group).then(response => {
-      if (response.insertId) { this.router.navigate(['/groups-list']) }
+      this.router.navigate(['/groups-list']);
     });
   }
   

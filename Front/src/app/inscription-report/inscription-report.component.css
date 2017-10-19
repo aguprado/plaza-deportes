@@ -1,0 +1,22 @@
+container {
+    line-height: 25px;
+}
+
+h3 {
+    color: green;
+}
+
+td {
+    padding: 0 5px;
+}
+
+@media print {
+    /* style sheet for print goes here */
+    .noprint {
+        visibility: hidden;
+    }
+}
+
+button {
+    margin: 0 10px;
+}

@@ -30,7 +30,7 @@ CREATE TABLE inscripcion (
 
 INSERT INTO usuario (nombre, password) VALUES ('admin', 'd033e22ae348aeb5660fc2140aec35850c4da997');
 
-INSERT INTO grupo (nombre, descripcion, dias, horarios, cupo) VALUES ('Natación', 'Niños de 9 a 10 años', 'Lun-Mier-Vier', '10hrs a 10.45hrs', 20);
+INSERT INTO grupo (nombre, descripcion, dias, horarios, cupo) VALUES ('Natación', 'Niños de 9 a 10 años', 'Lunes, Miercoles, Viernes', '10hrs a 10.45hrs', 20);
 INSERT INTO grupo (nombre, descripcion, dias, horarios, cupo) VALUES ('Basket', 'Niños de 11 a 15 años', 'Lun-Mar-Juev', '18hrs a 19.45hrs', 10);
 
 INSERT INTO inscripcion (documento, nombre, idGrupo, fnacimiento, edad, codigo) VALUES ('41842930', 'Agustin', 1, '30/5/89', 28, '');
