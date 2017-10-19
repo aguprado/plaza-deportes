@@ -9,9 +9,10 @@ export class AuthService {
     private authAnnouncedSource = new Subject<boolean>();
 
     constructor(private http: Http) { }
-
+    
     private logged: boolean = false;
-    config = { endpoint: 'http://localhost:8080' };
+    config = { endpoint: 'http://52.67.131.86:8080' };
+    //config = { endpoint: 'http://localhost:8080' };
 
     // Observable string streams
     authAnnounced$ = this.authAnnouncedSource.asObservable();

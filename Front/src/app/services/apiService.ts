@@ -7,8 +7,8 @@ import { Group } from '../models/Group';
 @Injectable()
 export class ApiService {
 
-    //apiUrl = 'http://52.67.131.86:8080';
-    apiUrl = 'http://localhost:8080';
+    apiUrl = 'http://52.67.131.86:8080';
+    //apiUrl = 'http://localhost:8080';
     token:string = '';
     ultimaInscripcion: any;
 
