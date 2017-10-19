@@ -1,6 +1,6 @@
 // Load required packages
 var express 			= require('express');
-var mysql   = require('mysql');
+var mysql               = require('mysql');
 var bodyParser 			= require('body-parser');
 var url                 = require('url');
 
@@ -26,16 +26,23 @@ var database = mysql.createConnection({
 
 database.connect();
 
-var user = 'admin';
+var usuario = 'admin';
 var password = '123';
 var token;
 
 // Create our Express router
 var router = express.Router();
 
+router.route('/validate')
+    .get(function(req, res) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        if (query.token == token) { res.send(true) } else { res.send(false) };
+    });
+
 router.route('/login')
     .post(function(req, res) {
-        if (req.body.user == user && req.body.password == password) {
+        if (req.body.usuario == usuario && req.body.password == password) {
             let t = 'token';
             token = t;
             return res.json({token: t});
@@ -46,8 +53,8 @@ router.route('/login')
 router.route('/logout')
     .post(function(req, res) {
         if (req.body.token != token) { return res.status(401).send() };
-        if (req.body.user == user && req.body.password == password) { return res.json(results) }
-        res.status(401).send()
+        token = null;
+        res.json();
     });
 
 router.route('/group')
@@ -76,7 +83,6 @@ router.route('/groups')
     .get(function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
-        if (query.token != token) { return res.status(401).send() };
         database.query('SELECT * FROM `group`', [], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);

@@ -9,16 +9,18 @@ export class ApiService {
 
     //apiUrl = 'http://52.67.131.86:8080';
     apiUrl = 'http://localhost:8080';
+    token = '';
     constructor(private http: Http) {}
     
     options = () => {
+        this.token = localStorage.getItem('token');
         let headers = new Headers({'Content-Type': 'application/json'});
         return new RequestOptions({headers: headers});
     }
 
     createGroup(group: Group): Promise<any> {
         let body = JSON.stringify(group);
-        let url = this.apiUrl+'/game';
+        let url = this.apiUrl+'/game?token='+this.token;
         return this.http.post(url, body, this.options()).toPromise()
             .then(response => {
                 return response.json();
@@ -26,7 +28,7 @@ export class ApiService {
     }
 
     deleteGroup(id): Promise<any> {
-        let url = this.apiUrl+'/group?id='+id;
+        let url = this.apiUrl+'/group?id='+id+'&token='+this.token;
         return this.http.delete(url, this.options()).toPromise()
             .then(response => {
                 return response.json();
@@ -42,7 +44,7 @@ export class ApiService {
     }
     
     loadGroup(id: string): Promise<any> {
-        let url = this.apiUrl+'/group?id='+id;
+        let url = this.apiUrl+'/group?id='+id+'&token='+this.token;
         return this.http.get(url, this.options())
             .toPromise().then(response => {
                 return response.json();
@@ -69,8 +71,7 @@ export class ApiService {
 
     //rejects the promise if error in the call
     private handleError(error: any) {
-        let errMsg = error.message || 'Server error';
-        console.error(errMsg);
-        return Promise.reject(errMsg);
+        let errMsg = error.statusText || 'Server error';
+        return console.error(errMsg);
     }
 }

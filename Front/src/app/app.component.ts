@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ApiService } from './services/apiService';
+import { AuthService } from './services/authService';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +9,13 @@ import { ApiService } from './services/apiService';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit{
 
-  constructor(private apiService: ApiService) {
-  };
+  constructor(private authenticationService: AuthService) { }
+
+  ngOnInit() { 
+    let token = localStorage.getItem('token');
+    if (token) { this.authenticationService.validateToken(token) };
+  }
 
 }

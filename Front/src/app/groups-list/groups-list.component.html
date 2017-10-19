@@ -1,12 +1,11 @@
-<div class="col-xs-2 pull-left">
-    <ul>
-        <li><button *ngIf="logged" class="btn btn-success" (click)="crearGrupo(group.id)">Crear nuevo grupo</button></li>
-        <li><button class="btn btn-info" (click)="desinscribirseGrupo(group.id)">Desinscribirse a grupo</button></li>
-        <li><button *ngIf="logged" class="btn btn-danger" (click)="logout()">Cerrar sesión</button></li>
-    </ul>
-</div>
-<div class="col-xs-10 pull-right">
-  <h4>Lista de grupos disponibles</h4>
+
+<div class="col-xs-10 col-xs-offset-1 container" [style.height]="innerHeight">
+  <h4 class="pull-left">Lista de grupos disponibles</h4>    
+  <ul class="pull-right">
+      <li><button *ngIf="logged" class="btn btn-success" (click)="crearGrupo(group.id)">Crear nuevo grupo</button></li>
+      <li><button class="btn btn-info" (click)="desinscribirseGrupo(group.id)">Desinscribirse a grupo</button></li>
+      <li><button *ngIf="logged" class="btn btn-danger" (click)="logout()">Cerrar sesión</button></li>
+  </ul>
   <table class="table table-bordered">
     <thead>
       <tr>
