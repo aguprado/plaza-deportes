@@ -1,0 +1,15 @@
+.table-container {
+    border-left: 1px solid #ddd;
+}
+
+table {
+    background: white;
+}
+
+tbody td {
+    line-height: 30px;
+}
+
+td {
+    text-align: center;
+}

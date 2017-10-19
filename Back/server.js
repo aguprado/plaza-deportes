@@ -26,9 +26,22 @@ var database = mysql.createConnection({
 
 database.connect();
 
-var usuario = 'admin';
-var password = '123';
-var token;
+let randomToken = () => {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
+let validateToken = (token, callback) => {
+    database.query('SELECT * FROM usuario WHERE token = ?', [token], function (err, results, fields) {
+        if (!results || !results.length){ return callback(false) };
+        if (err){ console.log(err); return callback(false) };
+        return callback(true);
+    })
+}
 
 // Create our Express router
 var router = express.Router();
@@ -37,43 +50,91 @@ router.route('/validate')
     .get(function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
-        if (query.token == token) { res.send(true) } else { res.send(false) };
+        if (!query.token) { return res.status(400).send() };
+        validateToken(query.token, (result) => {
+            res.send(result);
+        });
     });
 
 router.route('/login')
     .post(function(req, res) {
-        if (req.body.usuario == usuario && req.body.password == password) {
-            let t = 'token';
-            token = t;
-            return res.json({token: t});
-        }
-        res.status(401).send()
+        let token = randomToken();
+        if (!req.body.usuario || !req.body.password) { return res.status(400).send() };
+        database.query('UPDATE usuario SET token = ? WHERE nombre = ? AND password = ?', [token, req.body.usuario, req.body.password], function (err, results, fields) {
+            if (!results || !results.changedRows) { return res.send(false) };
+            if (err){ console.log(err); return res.status(500).send(err) };
+            res.send({token: token});
+        })
     });
 
 router.route('/logout')
     .post(function(req, res) {
-        if (req.body.token != token) { return res.status(401).send() };
-        token = null;
-        res.json();
+        if (!req.body.token) { return res.status(400).send() };
+        database.query('UPDATE usuario SET token = NULL WHERE token = ?', [req.body.token], function (err, results, fields) {
+            if (!results || !results.changedRows) { return res.send(false) };
+            if (err){ console.log(err); return res.status(500).send(err) };
+            res.send(true)
+        })
     });
 
-router.route('/group')
+router.route('/group/:id')
     .get(function(req, res) {
-        var url_parts = url.parse(req.url, true);
-        var query = url_parts.query;
-        if (query.token != token) { return res.status(401).send() };
-        database.query('SELECT * FROM `group` WHERE id = ?', [query.id], function (err, results, fields) {
+        if (!req.params.id) { return res.status(400).send() };
+        database.query('SELECT id, nombre FROM grupo WHERE id = ?', [req.params.id], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         })
     });
 
 router.route('/group')
+    .get(function(req, res) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        if (!query.token) { return res.status(400).send() };
+        validateToken(query.token, (result) => {
+            if (!result) { return res.status(401).send() }; 
+            database.query('SELECT * FROM grupo WHERE id = ?', [query.id], function (err, results, fields) {
+                if (err){ console.log(err); return res.status(500).send(err) };
+                res.json(results);
+            })
+        });
+    });
+
+router.route('/group')
     .delete(function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
-        if (query.token != token) { return res.status(401).send() };
-        database.query('DELETE FROM `group` WHERE id = ?', [query.id], function (err, results, fields) {
+        if (!query.token) { return res.status(400).send() };
+        validateToken(query.token, (result) => {
+            if (!result) { return res.status(401).send() }; 
+            database.query('DELETE FROM grupo WHERE id = ?', [query.id], function (err, results, fields) {
+                if (err){ console.log(err); return res.status(500).send(err) };
+                res.json(results);
+            });
+        });
+    });
+
+router.route('/inscripcion/:id')
+    .delete(function(req, res) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        if (!query.token) { return res.status(400).send() };
+        validateToken(query.token, (result) => {
+            if (!result) { return res.status(401).send() }; 
+            if (!req.params.id) { return res.status(400).send() };
+            database.query('DELETE FROM inscripcion WHERE id = ?', [req.params.id], function (err, results, fields) {
+                if (err){ console.log(err); return res.status(500).send(err) };
+                res.json(results);
+            });
+        });
+    });
+
+router.route('/inscriptos-grupo')
+    .get(function(req, res) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        if (!query.id) { return res.status(400).send() };
+        database.query('SELECT * from inscripcion where idGrupo = ?', [query.id], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         })
@@ -81,36 +142,56 @@ router.route('/group')
 
 router.route('/groups')
     .get(function(req, res) {
-        var url_parts = url.parse(req.url, true);
-        var query = url_parts.query;
-        database.query('SELECT * FROM `group`', [], function (err, results, fields) {
+        database.query('SELECT grupo.*, COUNT(inscripcion.documento) as inscriptos FROM grupo LEFT JOIN inscripcion ON grupo.id = inscripcion.idGrupo GROUP BY grupo.id', [], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
-            res.json(results);
-        })
-    });
-
-router.route('/group')
-    .post(function(req, res) {
-        if (req.body.token != token) { return res.status(401).send() };
-        database.query('INSERT INTO `group` () VALUES ()', [], function (err, results, fields) {
-            if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
             res.json(results);
         });
     });
+    
+router.route('/group')
+    .post(function(req, res) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        if (!query.token) { return res.status(400).send() };
+        validateToken(query.token, (result) => {
+            if (!result) { return res.status(401).send() }; 
+            database.query('INSERT INTO grupo (nombre, descripcion, dias, horarios, cupo) VALUES (?, ?, ?, ?, ?)', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.cupo], function (err, results, fields) {
+                if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
+                res.json(results);
+            });
+        });
+    });
 
-router.route('/inscription')
+router.route('/group')
+    .put(function(req, res) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        if (!query.token) { return res.status(400).send() };
+        validateToken(query.token, (result) => {
+            if (!result) { return res.status(401).send() }; 
+            database.query('UPDATE grupo SET nombre = ?, descripcion = ?, dias = ?, horarios = ?, cupo = ? WHERE id = ?', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.cupo, req.body.id], function (err, results, fields) {
+                if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
+                res.json(results);
+            });
+        });
+    });
+
+router.route('/inscripcion')
     .delete(function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
+        if (!query.id) { return res.status(400).send() };
         database.query('DELETE FROM inscription WHERE id = ?', [query.id], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         })
     });
-
-router.route('/inscription')
+    
+router.route('/inscripcion')
     .post(function(req, res) {
-        database.query('INSERT INTO inscription () VALUES ()', [], function (err, results, fields) {
+        let codigo = randomToken();
+        if (!req.body || !req.body.documento || !req.body.nombre || !req.body.fnacimiento || !req.body.edad || !req.body.idGrupo ) { return res.status(400).send() };
+        database.query('INSERT INTO inscripcion (documento, nombre, fnacimiento, edad, idGrupo, codigo) VALUES (?, ?, ?, ?, ?, ?)', [req.body.documento, req.body.nombre, req.body.fnacimiento, req.body.edad, req.body.idGrupo, codigo], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         })

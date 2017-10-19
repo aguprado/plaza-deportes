@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/authService';
 import { ApiService } from '../services/apiService';
@@ -13,7 +13,7 @@ declare let $: any;
 
 export class GroupsListComponent implements OnInit {
 
-  innerHeight: string;
+  //innerHeight: string;
   authSubscription: Subscription;
   logged: boolean = false;
   groups = [];
@@ -29,10 +29,21 @@ export class GroupsListComponent implements OnInit {
     this.apiService.loadGroups().then(response => {
       this.groups = response;
     });
+    /*
     this.innerHeight = (window.innerHeight)+'px';
-    //$(window).resize(() => {this.innerHeight = (window.innerHeight-30)+'px';});
+    $(window).resize(() => {this.innerHeight = (window.innerHeight-30)+'px';});*/
   }
 
-  logout = () => { this.authService.logout() }
+  borrarGrupo(id) {
+    this.apiService.deleteGroup(id).then(response => {
+      this.apiService.loadGroups().then(response => {
+        this.groups = response;
+      });
+    });
+  }
+
+  logout() { this.authService.logout() }
+
+  ngOnDestroy() { this.authSubscription.unsubscribe() }
 
 }

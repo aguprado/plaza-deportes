@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../services/authService';
 import { ApiService } from '../services/apiService';
-import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Group } from '../models/Group';
 
 @Component({
-  selector: 'app-group-detail',
-  templateUrl: './group-detail.component.html',
-  styleUrls: ['./group-detail.component.css']
+  selector: 'app-group-edit',
+  templateUrl: './group-edit.component.html',
+  styleUrls: ['./group-edit.component.css']
 })
-export class GroupDetailComponent implements OnInit {
+export class GroupEditComponent implements OnInit {
 
   paramsSubscription: Subscription;
   inscriptos = [];
   idGrupo: number;
+  group : Group;
 
   constructor(private authService: AuthService, private apiService: ApiService, private router: Router, private route: ActivatedRoute) {
     this.paramsSubscription = this.route.params.subscribe(params => {
@@ -22,16 +24,14 @@ export class GroupDetailComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.apiService.loadInscriptosGrupo(this.idGrupo).then(response => {
-      this.inscriptos = response;
+    this.apiService.loadGroupAdmin(this.idGrupo).then(response => {
+      this.group = response && response.length ? new Group(response.pop()) : this.router.navigate(['/groups-list']) && null;
     });
   }
 
-  borrarInscripcion(id) {
-    this.apiService.borrarInscripcionAdmin(id).then(response => {
-      this.apiService.loadInscriptosGrupo(this.idGrupo).then(response => {
-        this.inscriptos = response;
-      });
+  actualizarGrupo(id) {
+    this.apiService.updateGroup(this.group).then(response => {
+      if (response) { this.router.navigate(['/groups-list']) };
     });
   }
 

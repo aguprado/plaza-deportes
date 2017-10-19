@@ -1,6 +1,7 @@
 body {
     font-family: 'Lato', sans-serif !important;
-    color: #333;
+    color: #333 !important;
+    background: #F8F8F8 !important;
 }
 
 .no-padding {
@@ -17,4 +18,8 @@ body {
 
 input {
     outline: none !important;
+}
+
+.container {
+    margin-top: 40px;
 }

@@ -1,0 +1,27 @@
+<div *ngIf="group" class="col-xs-10 col-xs-offset-1 container" [style.height]="innerHeight">
+    <h4 class="pull-left">Inscribirse al grupo {{group.nombre}}</h4>
+    <form class="col-xs-8 col-xs-offset-1" (submit)="confirmarInscripcion()" ngNativeValidate>
+      <div class="col-xs-12 form-group">
+          <label class="col-xs-4">Cédula:</label>
+          <input class="form-control col-xs-6" required name="documento" placeholder="Tu cédula" maxlength="20" [(ngModel)]="inscripcion.documento"/>
+        </div>
+      <div class="col-xs-12 form-group">
+          <label class="col-xs-4">Nombre completo:</label>
+          <input class="form-control col-xs-6" required name="descripcion" placeholder="Tu nombre completo" maxlength="255" [(ngModel)]="inscripcion.nombre"/>
+      </div>
+      <div class="col-xs-12 form-group">
+          <label class="col-xs-4">Fecha de nacimiento:</label>
+          <input (change) = "updateEdad()" class="form-control col-xs-6" required name="dias" placeholder="dd-mm-aaaa" type="date" [(ngModel)]="inscripcion.fnacimiento"/>
+      </div>
+      <div class="col-xs-12 form-group">
+          <label class="col-xs-4">Edad:</label>
+          <input class="form-control col-xs-6" required name="edad" disabled placeholder="Tu edad" type="number" [(ngModel)]="inscripcion.edad"/>
+      </div>
+      <div class="col-xs-12 form-group">
+        <input type="submit" value="Confirmar" class="form-control btn btn-success"/>
+      </div>
+      <div class="col-xs-12 form-group">
+        <input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/>
+      </div>
+    </form>
+  </div>

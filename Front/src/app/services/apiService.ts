@@ -13,21 +13,36 @@ export class ApiService {
     constructor(private http: Http) {}
     
     options = () => {
-        this.token = localStorage.getItem('token');
         let headers = new Headers({'Content-Type': 'application/json'});
         return new RequestOptions({headers: headers});
     }
+/*
+    borrarInscripcion(id).then(response => {
+        this.apiService.loadInscriptosGrupo(this.idGrupo)
+*/
 
     createGroup(group: Group): Promise<any> {
+        this.token = localStorage.getItem('token');
         let body = JSON.stringify(group);
-        let url = this.apiUrl+'/game?token='+this.token;
+        let url = this.apiUrl+'/group?token='+this.token;
         return this.http.post(url, body, this.options()).toPromise()
             .then(response => {
                 return response.json();
             }).catch(this.handleError);
     }
 
-    deleteGroup(id): Promise<any> {
+    updateGroup(group: Group): Promise<any> {
+        this.token = localStorage.getItem('token');
+        let body = JSON.stringify(group);
+        let url = this.apiUrl+'/group?token='+this.token;
+        return this.http.put(url, body, this.options()).toPromise()
+            .then(response => {
+                return response.json();
+            }).catch(this.handleError);
+    }
+
+    deleteGroup(id: number): Promise<any> {
+        this.token = localStorage.getItem('token');
         let url = this.apiUrl+'/group?id='+id+'&token='+this.token;
         return this.http.delete(url, this.options()).toPromise()
             .then(response => {
@@ -43,7 +58,17 @@ export class ApiService {
             }).catch(this.handleError);
     }
     
-    loadGroup(id: string): Promise<any> {
+    loadInscriptosGrupo(id: number): Promise<any> {
+        this.token = localStorage.getItem('token');
+        let url = this.apiUrl+'/inscriptos-grupo?id='+id+'&token='+this.token;
+        return this.http.get(url, this.options())
+            .toPromise().then(response => {
+                return response.json();
+            }).catch(this.handleError);
+    }
+    
+    loadGroupAdmin(id: number): Promise<any> {
+        this.token = localStorage.getItem('token');
         let url = this.apiUrl+'/group?id='+id+'&token='+this.token;
         return this.http.get(url, this.options())
             .toPromise().then(response => {
@@ -51,8 +76,16 @@ export class ApiService {
             }).catch(this.handleError);
     }
     
-    inscribirse(ci: string, id: string): Promise<any> {
-        let body = JSON.stringify({ci: ci, id: id});
+    loadGroup(id: number): Promise<any> {
+        let url = this.apiUrl+'/group/'+id;
+        return this.http.get(url, this.options())
+            .toPromise().then(response => {
+                return response.json();
+            }).catch(this.handleError);
+    }
+    
+    inscribirse(inscripcion: any): Promise<any> {
+        let body = JSON.stringify(inscripcion);
         let url = this.apiUrl+'/inscripcion';
         return this.http.post(url, body, this.options())
             .toPromise().then(response => {
@@ -60,9 +93,8 @@ export class ApiService {
             }).catch(this.handleError);
     }
         
-    desinscribirse(ci: string, id: string, codigo: string): Promise<any> {
-        let body = JSON.stringify({ci: ci, id: id, codigo: codigo});
-        let url = this.apiUrl+'/inscripcion?id='+id+'&ci='+ci+'&codigo='+codigo;
+    borrarInscripcionAdmin(id: number): Promise<any> {
+        let url = this.apiUrl+'/inscripcion/'+id+'?token='+this.token;
         return this.http.delete(url, this.options())
             .toPromise().then(response => {
                 return response.json();

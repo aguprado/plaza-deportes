@@ -1,6 +1,10 @@
 
-.container {
-    margin-top: 40px;
+tbody td {
+    line-height: 30px;
+}
+
+td {
+    text-align: center;
 }
 
 ul {
@@ -17,4 +21,8 @@ li {
 .buttons {
     border-right: 1px solid #ddd;
     padding-top: 5px;
+}
+
+table {
+    background: white;
 }

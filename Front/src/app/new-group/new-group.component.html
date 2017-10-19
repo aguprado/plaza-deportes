@@ -1,0 +1,31 @@
+<div class="col-xs-10 col-xs-offset-1 container" [style.height]="innerHeight">
+  <h4 class="pull-left">Crear nuevo grupo</h4>
+  <form class="col-xs-8 col-xs-offset-1" (submit)="crearGrupo()" ngNativeValidate>
+    <div class="col-xs-12 form-group">
+        <label class="col-xs-4">Nombre:</label>
+        <input class="form-control col-xs-6" required name="nombre" placeholder="Nombre" maxlength="255" [(ngModel)]="newGroup.nombre"/>
+      </div>
+    <div class="col-xs-12 form-group">
+        <label class="col-xs-4">Descripción:</label>
+        <input class="form-control col-xs-6" required name="descripcion" placeholder="Descripción" maxlength="255" [(ngModel)]="newGroup.descripcion"/>
+    </div>
+    <div class="col-xs-12 form-group">
+        <label class="col-xs-4">Días:</label>
+        <input class="form-control col-xs-6" required name="dias" placeholder="Días" maxlength="255" [(ngModel)]="newGroup.dias"/>
+    </div>
+    <div class="col-xs-12 form-group">
+        <label class="col-xs-4">Horarios:</label>
+        <input class="form-control col-xs-6" required name="horarios" placeholder="Horarios" maxlength="255" [(ngModel)]="newGroup.horarios"/>
+    </div>
+    <div class="col-xs-12 form-group">
+        <label class="col-xs-4">Cupo:</label>
+        <input class="form-control col-xs-6" required name="cupo" placeholder="Cupo" min="0" type="number" [(ngModel)]="newGroup.cupo"/>
+    </div>
+    <div class="col-xs-12 form-group">
+      <input type="submit" value="Confirmar" class="form-control btn btn-success"/>
+    </div>
+    <div class="col-xs-12 form-group">
+      <input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/>
+    </div>
+  </form>
+</div>

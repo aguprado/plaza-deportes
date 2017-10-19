@@ -10,12 +10,19 @@ import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { AuthService } from './services/authService';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { NewGroupComponent } from './new-group/new-group.component';
+import { AuthGuard } from './guards/authGuard';
+import { GroupEditComponent } from './group-edit/group-edit.component';
+import { InscripcionComponent } from './inscripcion/inscripcion.component';
 
 const appRoutes: Routes = [
-  { path: 'groups-list', component: GroupsListComponent},
-  { path: 'group-detail/:id', component: GroupDetailComponent},
+  { path: 'groups-list', component: GroupsListComponent },
   { path: 'admin', component: LoginComponent },
-  { path: '', component: GroupsListComponent},
+  { path: 'group-detail/:id', component: GroupDetailComponent, canActivate: [AuthGuard] },
+  { path: 'group-edit/:id', component: GroupEditComponent, canActivate: [AuthGuard] },
+  { path: 'group-enroll/:id', component: InscripcionComponent },
+  { path: 'new-group', component: NewGroupComponent, canActivate: [AuthGuard] },
+  { path: '', component: GroupsListComponent },
   { path: '**', redirectTo: '' }
 ];
 
@@ -24,7 +31,10 @@ const appRoutes: Routes = [
     AppComponent,
     GroupsListComponent,
     GroupDetailComponent,
-    LoginComponent
+    LoginComponent,
+    NewGroupComponent,
+    GroupEditComponent,
+    InscripcionComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +46,7 @@ const appRoutes: Routes = [
     ),
     HttpModule
   ],
-  providers: [ApiService, AuthService],
+  providers: [ApiService, AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 

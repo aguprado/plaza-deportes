@@ -29,6 +29,7 @@ export class AuthService {
             .then(response => {
                 this.logged = response.json();
                 this.authAnnouncedSource.next(this.logged);
+                if (!this.logged) { localStorage.setItem('token', '') };
             }).catch(this.handleError);
     }
 
@@ -36,7 +37,7 @@ export class AuthService {
         let url = `${this.config.endpoint}/login`;
         let hash = CryptoJS.SHA1(password);
         let pass = hash.toString(CryptoJS.enc.Hex);
-        let body = JSON.stringify({ usuario: usuario, password: password });
+        let body = JSON.stringify({ usuario: usuario, password: pass });
         return this.http.post(url, body, this.options()).toPromise()
             .then(response => {
                 localStorage.setItem('token', response.json().token);
@@ -53,7 +54,7 @@ export class AuthService {
         let url = `${this.config.endpoint}/logout`;
         return this.http.post(url, body, this.options()).toPromise()
             .then(response => {
-                localStorage.setItem('token', null);
+                localStorage.setItem('token', '');
                 this.logged = false;
                 this.authAnnouncedSource.next(false);
                 return response.json();
@@ -63,6 +64,6 @@ export class AuthService {
     private handleError(error: any) {
         // In a real world app, we might send the error to remote logging infrastructure
         let errMsg = error.statusText || 'Server error';
-        return console.error(errMsg); // log to console instead
+        return console.log(errMsg); // log to console instead
     }
 }
