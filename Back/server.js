@@ -26,7 +26,7 @@ var database = mysql.createConnection({
 
 database.connect();
 
-var randomToken = () => {
+function randomToken() {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
             .toString(16)
@@ -35,7 +35,7 @@ var randomToken = () => {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
-var validateToken = (token, callback) => {
+function validateToken(token, callback) {
     database.query('SELECT * FROM usuario WHERE token = ?', [token], function (err, results, fields) {
         if (!results || !results.length){ return callback(false) };
         if (err){ console.log(err); return callback(false) };
@@ -51,7 +51,7 @@ router.route('/validate')
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
         if (!query.token) { return res.status(400).send() };
-        validateToken(query.token, (result) => {
+        validateToken(query.token, function(result) {
             res.send(result);
         });
     });
@@ -91,7 +91,7 @@ router.route('/group')
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
         if (!query.token) { return res.status(400).send() };
-        validateToken(query.token, (result) => {
+        validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             database.query('SELECT * FROM grupo WHERE id = ?', [query.id], function (err, results, fields) {
                 if (err){ console.log(err); return res.status(500).send(err) };
@@ -105,7 +105,7 @@ router.route('/group')
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
         if (!query.token) { return res.status(400).send() };
-        validateToken(query.token, (result) => {
+        validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             database.query('DELETE FROM grupo WHERE id = ?', [query.id], function (err, results, fields) {
                 if (err){ console.log(err); return res.status(500).send(err) };
@@ -119,7 +119,7 @@ router.route('/inscripcion/:id')
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
         if (!query.token) { return res.status(400).send() };
-        validateToken(query.token, (result) => {
+        validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             if (!req.params.id) { return res.status(400).send() };
             database.query('DELETE FROM inscripcion WHERE id = ?', [req.params.id], function (err, results, fields) {
@@ -153,7 +153,7 @@ router.route('/group')
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
         if (!query.token) { return res.status(400).send() };
-        validateToken(query.token, (result) => {
+        validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             database.query('INSERT INTO grupo (nombre, descripcion, dias, horarios, cupo) VALUES (?, ?, ?, ?, ?)', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.cupo], function (err, results, fields) {
                 if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
@@ -167,7 +167,7 @@ router.route('/group')
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
         if (!query.token) { return res.status(400).send() };
-        validateToken(query.token, (result) => {
+        validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             database.query('UPDATE grupo SET nombre = ?, descripcion = ?, dias = ?, horarios = ?, cupo = ? WHERE id = ?', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.cupo, req.body.id], function (err, results, fields) {
                 if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
@@ -182,7 +182,7 @@ router.route('/inscripcion')
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
         if (!query.id || !query.token) { return res.status(400).send() };
-        validateToken(query.token, (result) => {
+        validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             database.query('DELETE FROM inscription WHERE id = ?', [query.id], function (err, results, fields) {
                 if (err){ console.log(err); return res.status(500).send(err) };
