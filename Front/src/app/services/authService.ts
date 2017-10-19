@@ -11,8 +11,8 @@ export class AuthService {
     constructor(private http: Http) { }
     
     private logged: boolean = false;
-    config = { endpoint: 'http://52.67.131.86:8080' };
-    //config = { endpoint: 'http://localhost:8080' };
+    config = { endpoint: 'http://52.67.131.86:8081' };
+    //config = { endpoint: 'http://localhost:8081' };
 
     // Observable string streams
     authAnnounced$ = this.authAnnouncedSource.asObservable();
