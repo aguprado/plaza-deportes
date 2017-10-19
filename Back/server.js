@@ -26,7 +26,7 @@ var database = mysql.createConnection({
 
 database.connect();
 
-let randomToken = () => {
+var randomToken = () => {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
             .toString(16)
@@ -35,7 +35,7 @@ let randomToken = () => {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
-let validateToken = (token, callback) => {
+var validateToken = (token, callback) => {
     database.query('SELECT * FROM usuario WHERE token = ?', [token], function (err, results, fields) {
         if (!results || !results.length){ return callback(false) };
         if (err){ console.log(err); return callback(false) };
@@ -58,7 +58,7 @@ router.route('/validate')
 
 router.route('/login')
     .post(function(req, res) {
-        let token = randomToken();
+        var token = randomToken();
         if (!req.body.usuario || !req.body.password) { return res.status(400).send() };
         database.query('UPDATE usuario SET token = ? WHERE nombre = ? AND password = ?', [token, req.body.usuario, req.body.password], function (err, results, fields) {
             if (!results || !results.changedRows) { return res.send(false) };
@@ -204,7 +204,7 @@ router.route('/inscripcion/:codigo')
 router.route('/inscripcion')
     .post(function(req, res) {
         //random code
-        let codigo = Math.floor(100000 + Math.random() * 900000);
+        var codigo = Math.floor(100000 + Math.random() * 900000);
         if (!req.body || !req.body.documento || !req.body.nombre || !req.body.fnacimiento || !req.body.edad || !req.body.idGrupo ) { return res.status(400).send() };
         database.query('INSERT INTO inscripcion (documento, nombre, fnacimiento, edad, idGrupo, codigo) VALUES (?, ?, ?, ?, ?, ?)', [req.body.documento, req.body.nombre, req.body.fnacimiento, req.body.edad, req.body.idGrupo, codigo], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
