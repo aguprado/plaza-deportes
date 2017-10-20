@@ -175,6 +175,16 @@ router.route('/group')
             });
         });
     });
+    
+//public
+router.route('/inscripcion/:codigo')
+    .delete(function(req, res) {
+        if (!req.params.codigo) { return res.status(400).send() };
+        database.query('DELETE FROM inscription WHERE codigo = ?', [req.params.codigo], function (err, results, fields) {
+            if (err){ console.log(err); return res.status(500).send(err) };
+            res.json(results);
+        })
+    });
 
 //admin
 router.route('/inscripcion')
@@ -189,16 +199,6 @@ router.route('/inscripcion')
                 res.json(results);
             });
         });
-    });
-
-//public
-router.route('/inscripcion/:codigo')
-    .delete(function(req, res) {
-        if (!req.params.codigo) { return res.status(400).send() };
-        database.query('DELETE FROM inscription WHERE codigo = ?', [req.params.codigo], function (err, results, fields) {
-            if (err){ console.log(err); return res.status(500).send(err) };
-            res.json(results);
-        })
     });
 
 router.route('/inscripcion')
