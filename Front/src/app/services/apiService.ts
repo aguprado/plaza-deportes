@@ -87,7 +87,7 @@ export class ApiService {
     }
     
     desinscribirse(codigo: number): Promise<any> {
-        let url = this.apiUrl+'/inscripcion?codigo='+codigo;
+        let url = this.apiUrl+'/inscripcion/'+codigo;
         return this.http.delete(url, this.options())
             .toPromise().then(response => {
                 return response.json();
