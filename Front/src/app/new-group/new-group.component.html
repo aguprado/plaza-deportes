@@ -19,13 +19,17 @@
     </div>
     <div class="col-xs-12 form-group">
         <label class="col-xs-4">Cupo:</label>
-        <input class="form-control col-xs-6" required name="cupo" placeholder="Cupo" min="0" type="number" [(ngModel)]="newGroup.cupo"/>
+        <input (change)="changeCupo()" class="form-control col-xs-6" required name="cupo" placeholder="Cupo" min="0" type="number" [(ngModel)]="newGroup.cupo"/>
     </div>
     <div class="col-xs-12 form-group">
-      <input type="submit" value="Confirmar" class="form-control btn btn-success"/>
+        <label class="col-xs-4">Horarios disponibles para agenda:</label>
+        <input *ngFor="let agenda of newGroup.agendaGrupo; let i = index;" class="form-group form-control col-xs-6" required name="{{'agendaGrupo-'+i}}" placeholder="Día y hora" type="text" [(ngModel)]="newGroup.agendaGrupo[i].diahora"/>
     </div>
     <div class="col-xs-12 form-group">
-      <input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/>
+        <ul class="col-xs-12 no-padding">
+          <li class="no-padding col-xs-6"><input type="submit" value="Confirmar" class="form-control btn btn-success"/></li>
+          <li class="no-padding col-xs-6"><input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/></li>
+        </ul>
     </div>
   </form>
 </div>

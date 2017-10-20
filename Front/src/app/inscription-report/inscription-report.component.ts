@@ -16,9 +16,9 @@ export class InscriptionReportComponent {
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { 
     this.paramsSubscription = this.route.params.subscribe(params => {
         let documento = params['documento'];
-        let idGroup = params['idGroup'];    
+        let idAgenda = params['idAgenda'];    
         let inscripcion = apiService.getUltimaInscripcion();
-        if (inscripcion.documento == documento && inscripcion.idGrupo == idGroup) { this.inscripcion = inscripcion };
+        if (inscripcion && inscripcion.documento == documento && inscripcion.idGrupo == idAgenda) { this.inscripcion = inscripcion };
     });
   }
 

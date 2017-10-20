@@ -25,7 +25,7 @@ export class GroupEditComponent implements OnInit {
   
   ngOnInit() {
     this.apiService.loadGroupAdmin(this.idGrupo).then(response => {
-      this.group = response && response.length ? new Group(response.pop()) : this.router.navigate(['/groups-list']) && null;
+      this.group = response ? new Group(response) : this.router.navigate(['/groups-list']) && null;
     });
   }
 
@@ -33,6 +33,12 @@ export class GroupEditComponent implements OnInit {
     this.apiService.updateGroup(this.group).then(response => {
       if (response) { this.router.navigate(['/groups-list']) };
     });
+  }
+
+  changeCupo() {
+    while (this.group.cupo != this.group.agendaGrupo.length) { 
+      this.group.cupo > this.group.agendaGrupo.length ? this.group.agendaGrupo.push( { diahora: '' } ) : this.group.agendaGrupo.pop();
+    }
   }
 
   ngOnDestroy() { this.paramsSubscription.unsubscribe() }

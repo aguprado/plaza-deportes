@@ -5,7 +5,8 @@ export class Group {
     descripcion: string;
     dias: string;
     horarios: string;
-    cupo: string;
+    cupo: number;
+    agendaGrupo: any[];
 
     constructor(data) {
         this.id = data.id;
@@ -14,6 +15,7 @@ export class Group {
         this.dias = data.dias;
         this.horarios = data.horarios;
         this.cupo = data.cupo;
+        this.agendaGrupo = data.agendaGrupo;
     }
 
 }

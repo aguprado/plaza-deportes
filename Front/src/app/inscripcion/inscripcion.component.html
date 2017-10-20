@@ -18,10 +18,21 @@
           <input class="form-control col-xs-6" required name="edad" disabled placeholder="Tu edad" type="number" [(ngModel)]="inscripcion.edad"/>
       </div>
       <div class="col-xs-12 form-group">
-        <input type="submit" value="Confirmar" class="form-control btn btn-success"/>
-      </div>
-      <div class="col-xs-12 form-group">
-        <input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/>
+          <label class="col-xs-4">Seleccionar horario para agenda:</label>
+          <ul class="col-xs-12 no-padding" *ngFor="let agenda of group.agendaGrupo; let i = index;">
+            <li class="col-xs-6 nombre text-left">{{agenda.diahora}}</li>
+            <li class="no-padding col-xs-6 text-center">
+              <button *ngIf="!agenda.tomado && inscripcion.idAgenda != agenda.id" class="col-xs-12 no-padding btn btn-success" (click)="inscripcion.idAgenda = agenda.id; inscripcion.diahora = agenda.diahora">Seleccionar</button>
+              <span *ngIf="!agenda.tomado && inscripcion.idAgenda == agenda.id" class="seleccionado col-xs-12 no-padding">Seleccionado</span>
+              <span *ngIf="agenda.tomado" class="no-disponible col-xs-12 no-padding">No disponible</span>
+            </li>
+          </ul>
+       </div>
+       <div class="col-xs-12 form-group">
+          <ul class="col-xs-12 no-padding">
+            <li class="no-padding col-xs-6"><input type="submit" value="Confirmar" class="form-control btn btn-success"/></li>
+            <li class="no-padding col-xs-6"><input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/></li>
+          </ul>
       </div>
     </form>
   </div>

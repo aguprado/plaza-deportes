@@ -11,17 +11,24 @@ import { Router } from '@angular/router';
 })
 export class NewGroupComponent {
 
-  newGroup: {nombre: string, descripcion: string, dias: string, horarios: string, cupos: number};
+  newGroup: {nombre: string, descripcion: string, dias: string, horarios: string, cupo: number, agendaGrupo: any[]};
   
   constructor(private apiService: ApiService, private router: Router) { 
-    this.newGroup = {nombre: null, descripcion: null, dias: null, horarios: null, cupos: 0};
+    this.newGroup = {nombre: null, descripcion: null, dias: null, horarios: null, cupo: 0, agendaGrupo: []};
   }
 
   crearGrupo() {
+    debugger;
     let group: Group = new Group(this.newGroup);
     this.apiService.createGroup(group).then(response => {
       this.router.navigate(['/groups-list']);
     });
+  }
+
+  changeCupo() {
+    while (this.newGroup.cupo != this.newGroup.agendaGrupo.length) { 
+      this.newGroup.cupo > this.newGroup.agendaGrupo.length ? this.newGroup.agendaGrupo.push( { diahora: '' } ) : this.newGroup.agendaGrupo.pop();
+    }
   }
   
 }

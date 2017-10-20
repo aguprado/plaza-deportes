@@ -19,8 +19,8 @@ app.all('*', function(req, res, next) {
 var database = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
-    password : '41842930',
-    //password : '',
+    //password : '41842930',
+    password : '',
     database : 'plazadeportes'
 });
 
@@ -77,25 +77,43 @@ router.route('/logout')
         })
     });
 
+    //public
 router.route('/group/:id')
     .get(function(req, res) {
         if (!req.params.id) { return res.status(400).send() };
         database.query('SELECT id, nombre FROM grupo WHERE id = ?', [req.params.id], function (err, results, fields) {
+            let result = results.pop();
+            let grupo = {id: result.id, nombre: result.nombre, agendaGrupo: []};
             if (err){ console.log(err); return res.status(500).send(err) };
-            res.json(results);
+            database.query('SELECT id, diahora, tomado FROM agendaGrupo WHERE idGrupo = ?', [req.params.id], function (err, agendas, fields) {
+                if (err){ console.log(err); return res.status(500).send(err) };
+                agendas.forEach(function(agenda) {
+                    grupo.agendaGrupo.push(agenda);
+                }, this);
+                res.json(grupo);
+            })
         })
     });
-
+    
+    //private
 router.route('/group')
     .get(function(req, res) {
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
-        if (!query.token) { return res.status(400).send() };
+        if (!query.token || !query.id) { return res.status(400).send() };
         validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             database.query('SELECT * FROM grupo WHERE id = ?', [query.id], function (err, results, fields) {
+                let result = results.pop();
+                let grupo = {id: result.id, nombre: result.nombre, descripcion: result.descripcion, dias: result.dias, horarios: result.horarios, cupo: result.cupo, agendaGrupo: []};
                 if (err){ console.log(err); return res.status(500).send(err) };
-                res.json(results);
+                database.query('SELECT id, diahora, tomado FROM agendaGrupo WHERE idGrupo = ?', [query.id], function (err, agendas, fields) {
+                    if (err){ console.log(err); return res.status(500).send(err) };
+                    agendas.forEach(function(agenda) {
+                        grupo.agendaGrupo.push(agenda);
+                    }, this);
+                    res.json(grupo);
+                })
             })
         });
     });
@@ -135,7 +153,7 @@ router.route('/inscriptos-grupo')
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
         if (!query.id) { return res.status(400).send() };
-        database.query('SELECT * from inscripcion where idGrupo = ?', [query.id], function (err, results, fields) {
+        database.query('SELECT inscripcion.* from inscripcion INNER JOIN agendaGrupo ON inscripcion.idAgendaGrupo = agendaGrupo.id WHERE agendaGrupo.idGrupo = ?', [query.id], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         })
@@ -143,7 +161,7 @@ router.route('/inscriptos-grupo')
 
 router.route('/groups')
     .get(function(req, res) {
-        database.query('SELECT grupo.*, COUNT(inscripcion.documento) as inscriptos FROM grupo LEFT JOIN inscripcion ON grupo.id = inscripcion.idGrupo GROUP BY grupo.id', [], function (err, results, fields) {
+        database.query('SELECT grupo.*, COUNT(agendaGrupo.idInscripcion) as inscriptos FROM grupo LEFT JOIN agendaGrupo ON grupo.id = agendaGrupo.idGrupo GROUP BY grupo.id', [], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         });
@@ -158,7 +176,14 @@ router.route('/group')
             if (!result) { return res.status(401).send() }; 
             database.query('INSERT INTO grupo (nombre, descripcion, dias, horarios, cupo) VALUES (?, ?, ?, ?, ?)', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.cupo], function (err, results, fields) {
                 if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
-                res.json(results);
+                let inserted = 0;
+                let groupId = results.insertId;
+                for (var index = 0; index < req.body.agendaGrupo.length; index++) {
+                    database.query('INSERT INTO agendaGrupo (idGrupo, diahora) VALUES (?, ?)', [groupId, req.body.agendaGrupo[index].diahora], function (err, results, fields) {
+                        if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
+                        inserted+=1; if (inserted == req.body.agendaGrupo.length) { res.json(true) };
+                    });           
+                }
             });
         });
     });
@@ -170,7 +195,7 @@ router.route('/group')
         if (!query.token) { return res.status(400).send() };
         validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
-            database.query('UPDATE grupo SET nombre = ?, descripcion = ?, dias = ?, horarios = ?, cupo = ? WHERE id = ?', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.cupo, req.body.id], function (err, results, fields) {
+            database.query('UPDATE grupo SET nombre = ?, descripcion = ?, dias = ?, horarios = ? WHERE id = ?', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.id], function (err, results, fields) {
                 if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
                 res.json(results);
             });
@@ -196,8 +221,11 @@ router.route('/inscripcion')
         validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             database.query('DELETE FROM inscripcion WHERE id = ?', [query.id], function (err, results, fields) {
-                if (err){ console.log(err); return res.status(500).send(err) };
-                res.json(results);
+                if (err){ console.log(err); return res.status(500).send(err) };            
+                database.query('UPDATE agendaGrupo SET idInscripcion = NULL, tomado = 0 WHERE idInscripcion = ?', [query.id], function (err, results, fields) {
+                    if (err){ console.log(err); return res.status(500).send(err) };
+                    res.send(true);
+                });
             });
         });
     });
@@ -206,11 +234,14 @@ router.route('/inscripcion')
     .post(function(req, res) {
         //random code
         var codigo = Math.floor(100000 + Math.random() * 900000);
-        if (!req.body || !req.body.documento || !req.body.nombre || !req.body.fnacimiento || !req.body.edad || !req.body.idGrupo ) { return res.status(400).send() };
-        database.query('INSERT INTO inscripcion (documento, nombre, fnacimiento, edad, idGrupo, codigo) VALUES (?, ?, ?, ?, ?, ?)', [req.body.documento, req.body.nombre, req.body.fnacimiento, req.body.edad, req.body.idGrupo, codigo], function (err, results, fields) {
+        if (!req.body || !req.body.idAgenda || !req.body.documento || !req.body.nombre || !req.body.fnacimiento || !req.body.edad || !req.body.diahora ) { return res.status(400).send() };
+        database.query('INSERT INTO inscripcion (documento, nombre, fnacimiento, edad, idAgendaGrupo, codigo) VALUES (?, ?, ?, ?, ?, ?)', [req.body.documento, req.body.nombre, req.body.fnacimiento, req.body.edad, req.body.idAgenda, codigo], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
-            res.json({documento: req.body.documento, nombre: req.body.nombre, fnacimiento: req.body.fnacimiento, edad: req.body.edad, idGrupo: req.body.idGrupo, codigo: codigo});
-        })
+            database.query('UPDATE agendaGrupo SET idInscripcion = ?, tomado = 1 WHERE id = ?', [results.insertId, req.body.idAgenda], function (err, results, fields) {
+                if (err){ console.log(err); return res.status(500).send(err) };
+                res.json({documento: req.body.documento, idAgenda: req.body.idAgenda, nombre: req.body.nombre, fnacimiento: req.body.fnacimiento, edad: req.body.edad, diahora: req.body.diahora, codigo: codigo});
+            });
+        });
     });
 
 //register router
