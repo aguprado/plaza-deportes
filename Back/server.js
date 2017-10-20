@@ -82,8 +82,8 @@ router.route('/group/:id')
     .get(function(req, res) {
         if (!req.params.id) { return res.status(400).send() };
         database.query('SELECT id, nombre FROM grupo WHERE id = ?', [req.params.id], function (err, results, fields) {
-            let result = results.pop();
-            let grupo = {id: result.id, nombre: result.nombre, agendaGrupo: []};
+            var result = results.pop();
+            var grupo = {id: result.id, nombre: result.nombre, agendaGrupo: []};
             if (err){ console.log(err); return res.status(500).send(err) };
             database.query('SELECT id, diahora, tomado FROM agendaGrupo WHERE idGrupo = ?', [req.params.id], function (err, agendas, fields) {
                 if (err){ console.log(err); return res.status(500).send(err) };
@@ -104,8 +104,8 @@ router.route('/group')
         validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             database.query('SELECT * FROM grupo WHERE id = ?', [query.id], function (err, results, fields) {
-                let result = results.pop();
-                let grupo = {id: result.id, nombre: result.nombre, descripcion: result.descripcion, dias: result.dias, horarios: result.horarios, cupo: result.cupo, agendaGrupo: []};
+                var result = results.pop();
+                var grupo = {id: result.id, nombre: result.nombre, descripcion: result.descripcion, dias: result.dias, horarios: result.horarios, cupo: result.cupo, agendaGrupo: []};
                 if (err){ console.log(err); return res.status(500).send(err) };
                 database.query('SELECT id, diahora, tomado FROM agendaGrupo WHERE idGrupo = ?', [query.id], function (err, agendas, fields) {
                     if (err){ console.log(err); return res.status(500).send(err) };
@@ -176,8 +176,8 @@ router.route('/group')
             if (!result) { return res.status(401).send() }; 
             database.query('INSERT INTO grupo (nombre, descripcion, dias, horarios, cupo) VALUES (?, ?, ?, ?, ?)', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.cupo], function (err, results, fields) {
                 if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
-                let inserted = 0;
-                let groupId = results.insertId;
+                var inserted = 0;
+                var groupId = results.insertId;
                 for (var index = 0; index < req.body.agendaGrupo.length; index++) {
                     database.query('INSERT INTO agendaGrupo (idGrupo, diahora) VALUES (?, ?)', [groupId, req.body.agendaGrupo[index].diahora], function (err, results, fields) {
                         if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
@@ -196,7 +196,7 @@ router.route('/group')
         validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             database.query('UPDATE grupo SET nombre = ?, descripcion = ?, dias = ?, horarios = ? WHERE id = ?', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.id], function (err, results, fields) {
-                let updated = 0;
+                var updated = 0;
                 for (var index = 0; index < req.body.agendaGrupo.length; index++) {
                     database.query('UPDATE agendaGrupo SET diahora = ? WHERE id = ?', [req.body.agendaGrupo[index].diahora, req.body.agendaGrupo[index].id], function (err, results, fields) {
                         if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
