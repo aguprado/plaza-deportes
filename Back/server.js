@@ -181,7 +181,7 @@ router.route('/group')
 router.route('/inscripcion/:codigo')
     .delete(function(req, res) {
         if (!req.params.codigo) { return res.status(400).send() };
-        database.query('DELETE FROM inscription WHERE codigo = ?', [req.params.codigo], function (err, results, fields) {
+        database.query('DELETE FROM inscripcion WHERE codigo = ?', [req.params.codigo], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         })
@@ -195,7 +195,7 @@ router.route('/inscripcion')
         if (!query.id || !query.token) { return res.status(400).send() };
         validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
-            database.query('DELETE FROM inscription WHERE id = ?', [query.id], function (err, results, fields) {
+            database.query('DELETE FROM inscripcion WHERE id = ?', [query.id], function (err, results, fields) {
                 if (err){ console.log(err); return res.status(500).send(err) };
                 res.json(results);
             });
