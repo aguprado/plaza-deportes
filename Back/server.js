@@ -83,6 +83,7 @@ router.route('/group/:id')
         if (!req.params.id) { return res.status(400).send() };
         database.query('SELECT id, nombre FROM grupo WHERE id = ?', [req.params.id], function (err, results, fields) {
             var result = results.pop();
+            if (!result || !result.id) { return res.status(500).send() };
             var grupo = {id: result.id, nombre: result.nombre, agendaGrupo: []};
             if (err){ console.log(err); return res.status(500).send(err) };
             database.query('SELECT id, diahora, tomado FROM agendaGrupo WHERE idGrupo = ?', [req.params.id], function (err, agendas, fields) {

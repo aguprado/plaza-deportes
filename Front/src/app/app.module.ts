@@ -16,6 +16,7 @@ import { GroupEditComponent } from './group-edit/group-edit.component';
 import { InscripcionComponent } from './inscripcion/inscripcion.component';
 import { DesinscripcionComponent } from './desinscripcion/desinscripcion.component';
 import { InscriptionReportComponent } from './inscription-report/inscription-report.component';
+import { LoadingService } from './services/loadingService';
 
 const appRoutes: Routes = [
   { path: 'groups-list', component: GroupsListComponent },
@@ -52,7 +53,7 @@ const appRoutes: Routes = [
     ),
     HttpModule
   ],
-  providers: [ApiService, AuthService, AuthGuard],
+  providers: [ApiService, AuthService, AuthGuard, LoadingService],
   bootstrap: [AppComponent]
 })
 

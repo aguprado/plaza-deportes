@@ -7,6 +7,14 @@ button {
     margin: 0 2px;
 }
 
-h4 {
+h4, h5 {
     color: gray;
+}
+
+.loading { 
+    position: absolute;
+    z-index: 999;
+    top: 200px;
+    left: 0;
+    overflow: hidden;
 }

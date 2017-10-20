@@ -3,7 +3,7 @@
   <h4 class="pull-left">Lista de grupos disponibles</h4>    
   <ul class="pull-right">
       <li *ngIf="logged"><button class="col-xs-12 btn btn-success" routerLink="/new-group" >Crear nuevo grupo</button></li>
-      <li *ngIf="!logged"><button class="col-xs-12 btn btn-info" routerLink="/group-unroll">Desinscribirse a grupo</button></li>
+      <li *ngIf="!logged"><button class="col-xs-12 btn btn-info" routerLink="/group-unroll">Anular agenda para inscripción</button></li>
       <li *ngIf="logged"><button class="col-xs-12 btn btn-danger" (click)="logout()">Cerrar sesión</button></li>
   </ul>
   <table class="table table-bordered">
@@ -26,7 +26,7 @@
             <td>{{group.dias}}</td>
             <td>{{group.horarios}}</td>
             <td>{{group.inscriptos}}/{{group.cupo}}</td>
-            <td *ngIf="!logged"><button [disabled]="group.inscriptos == group.cupo" class="col-xs-12 btn btn-success" routerLink="/group-enroll/{{group.id}}">Inscribirse</button></td>
+            <td *ngIf="!logged"><button [disabled]="group.inscriptos == group.cupo" class="col-xs-12 btn btn-success" routerLink="/group-enroll/{{group.id}}">Agendar inscripción</button></td>
             <td *ngIf="logged"><button class="col-xs-12 btn btn-success" routerLink="/group-detail/{{group.id}}">Ver agendados</button></td>
             <td *ngIf="logged"><button class="col-xs-12 btn btn-info" routerLink="/group-edit/{{group.id}}">Modificar</button></td>
             <td *ngIf="logged"><button class="col-xs-12 btn btn-danger" (click)="borrarGrupo(group.id)">Borrar</button></td>

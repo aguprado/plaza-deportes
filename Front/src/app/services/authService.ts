@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Headers, RequestOptions, Http, Response } from '@angular/http';
 import { Subject } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
+import { LoadingService } from './loadingService';
 
 @Injectable()
 export class AuthService {
 
     private authAnnouncedSource = new Subject<boolean>();
 
-    constructor(private http: Http) { }
+    constructor(private http: Http, private loadingService: LoadingService) { }
     
     private logged: boolean = false;
     config = { endpoint: 'http://52.67.131.86:8081' };
@@ -25,9 +26,11 @@ export class AuthService {
     getLoggedStatus() { return this.logged };
 
     validateToken(token:string): Promise<any> {
+        this.loadingService.loaderStart();
         let url = `${this.config.endpoint}/validate?token=${token}`;
         return this.http.get(url, this.options()).toPromise()
             .then(response => {
+                this.loadingService.loaderStop();
                 this.logged = response.json();
                 this.authAnnouncedSource.next(this.logged);
                 if (!this.logged) { localStorage.setItem('token', '') };
@@ -35,12 +38,14 @@ export class AuthService {
     }
 
     login(usuario: string, password: string): Promise<any> {
+        this.loadingService.loaderStart();
         let url = `${this.config.endpoint}/login`;
         let hash = CryptoJS.SHA1(password);
         let pass = hash.toString(CryptoJS.enc.Hex);
         let body = JSON.stringify({ usuario: usuario, password: pass });
         return this.http.post(url, body, this.options()).toPromise()
             .then(response => {
+                this.loadingService.loaderStop();
                 localStorage.setItem('token', response.json().token);
                 this.logged = true;
                 this.authAnnouncedSource.next(true);
@@ -49,12 +54,14 @@ export class AuthService {
     }
 
     logout(): Promise<any> {
+        this.loadingService.loaderStart();
         let token = localStorage.getItem('token');
         if (!token) { return };
         let body = JSON.stringify({ token: token });
         let url = `${this.config.endpoint}/logout`;
         return this.http.post(url, body, this.options()).toPromise()
             .then(response => {
+                this.loadingService.loaderStop();
                 localStorage.setItem('token', '');
                 this.logged = false;
                 this.authAnnouncedSource.next(false);
@@ -62,7 +69,8 @@ export class AuthService {
             }).catch(this.handleError);
     }
 
-    private handleError(error: any) {
+    handleError(error: any) {
+        this.loadingService.loaderStop();
         // In a real world app, we might send the error to remote logging infrastructure
         let errMsg = error.statusText || 'Server error';
         return console.log(errMsg); // log to console instead

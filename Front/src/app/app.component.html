@@ -1,3 +1,9 @@
 <h3 class="text-center">Inscripciones</h3>
-<h4 class="text-center">Plaza de deportes Paysandú</h4>
-<router-outlet></router-outlet>
+<h4 class="text-center">Plaza de Deportes José E. Rodó</h4>
+<h5 class="text-center">Paysandú, Uruguay</h5>
+<div [hidden]="loading" class="col-xs-12">
+    <router-outlet></router-outlet>
+</div>
+<div class="text-center col-xs-12 loading" [hidden]="!loading">
+    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+</div>
