@@ -13,7 +13,7 @@
         <th>Descripción</th>
         <th>Días</th>
         <th>Horarios</th>
-        <th>Inscriptos</th>
+        <th>Agendados</th>
         <th *ngIf="logged" colspan="3">Acciones</th>
         <th *ngIf="!logged" colspan="1">Acciones</th>
       </tr>
@@ -27,7 +27,7 @@
             <td>{{group.horarios}}</td>
             <td>{{group.inscriptos}}/{{group.cupo}}</td>
             <td *ngIf="!logged"><button [disabled]="group.inscriptos == group.cupo" class="col-xs-12 btn btn-success" routerLink="/group-enroll/{{group.id}}">Inscribirse</button></td>
-            <td *ngIf="logged"><button class="col-xs-12 btn btn-success" routerLink="/group-detail/{{group.id}}">Ver inscriptos</button></td>
+            <td *ngIf="logged"><button class="col-xs-12 btn btn-success" routerLink="/group-detail/{{group.id}}">Ver agendados</button></td>
             <td *ngIf="logged"><button class="col-xs-12 btn btn-info" routerLink="/group-edit/{{group.id}}">Modificar</button></td>
             <td *ngIf="logged"><button class="col-xs-12 btn btn-danger" (click)="borrarGrupo(group.id)">Borrar</button></td>
         </tr>

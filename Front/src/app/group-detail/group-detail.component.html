@@ -1,6 +1,6 @@
 <div class="col-xs-10 col-xs-offset-1 container" [style.height]="innerHeight">
     <div class="no-padding col-xs-3 pull-left">
-      <h4 class="no-padding pull-left col-xs-12">Detalle de inscripciones al grupo</h4>
+      <h4 class="no-padding pull-left col-xs-12">Detalle de agendas al grupo</h4>
       <button class="btn btn-success pull-left" routerLink="/groups-list">Volver</button>
     </div>
     <div class="col-xs-9 table-container">
@@ -11,16 +11,18 @@
               <th>Nombre</th>
               <th>Fecha de nacimiento</th>
               <th>Edad</th>
+              <th>Agenda</th>
               <th colspan="1">Acciones</th>
             </tr>
           </thead>
           <tbody>
-              <tr *ngIf="!inscriptos || !inscriptos.length"><td colspan="9">No hay inscriptos</td></tr>
+              <tr *ngIf="!inscriptos || !inscriptos.length"><td colspan="9">No hay personas agendadas</td></tr>
               <tr *ngFor="let inscripto of inscriptos">
                   <td>{{inscripto.documento}}</td>
                   <td>{{inscripto.nombre}}</td>
                   <td>{{inscripto.fnacimiento}}</td>
                   <td>{{inscripto.edad}}</td>
+                  <td>{{inscripto.diahora}}</td>
                   <td><button class="col-xs-12 btn btn-danger" (click)="borrarInscripcion(inscripto.id)">Borrar</button></td>
               </tr>
           </tbody>

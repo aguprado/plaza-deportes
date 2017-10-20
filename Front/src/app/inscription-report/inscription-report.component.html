@@ -1,35 +1,48 @@
 <h3 *ngIf="!inscripcion">Inscripción inexistente</h3>
 <div *ngIf="inscripcion" class="col-xs-10 col-xs-offset-1 container" [style.height]="innerHeight">
-  <h3>Inscripción confirmada!</h3>
-  <p>
-    La Inscripción ha sido realizada con éxito.
-    Deberás presentarte en la plaza de deportes en el horario del grupo al cual te inscribiste junto con tu documento.
-  </p>
-  <h4>Detalle de la inscripción</h4>
-  <table class="table table-bordered">
-    <tbody>
-        <tr>
-            <td>Documento</td>
-            <td>{{inscripcion.documento}}</td>
-        </tr>
-        <tr>
-            <td>Nombre completo</td>
-            <td>{{inscripcion.nombre}}</td>
-        </tr>
-        <tr>
-            <td>Fecha de nacimiento</td>
-            <td>{{formatDate(inscripcion.fnacimiento)}}</td>
-        </tr>
-        <tr>
-            <td>Edad</td>
-            <td>{{inscripcion.edad}}</td>
-        </tr>
-        <tr>
-            <td>Dia y hora de agenda</td>
-            <td>{{inscripcion.diahora}}</td>
-        </tr>
-    </tbody>
-  </table>
+    <h3>Solicitud de agenda para inscripción a grupo confirmada!</h3>
+    <p>
+        Se ha agendado la hora para inscripción a grupo con éxito.
+        Deberás presentarte en la plaza de deportes en el horario al cual te agendaste junto con:
+    </p>
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td>Reporte de inscripción</td>
+            </tr>
+            <tr>
+                <td>Fotocopia de cédula de identidad</td>
+            </tr>
+            <tr>
+                <td>Certificado médico, ficha médica o carné pediátrico o del adolescente.</td>
+            </tr>
+            <tr>
+                <td>Importe de la primera cuota $ 480.</td>
+            </tr>
+        </tbody>
+    </table>
+ 
+    <h4>Detalle de la inscripción</h4>
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td>Documento</td>
+                <td>{{inscripcion.documento}}</td>
+            </tr>
+            <tr>
+                <td>Nombre completo</td>
+                <td>{{inscripcion.nombre}}</td>
+            </tr>
+            <tr>
+                <td>Fecha de nacimiento</td>
+                <td>{{formatDate(inscripcion.fnacimiento)}}</td>
+            </tr>
+            <tr>
+                <td>Dia y hora de agenda</td>
+                <td>{{inscripcion.diahora}}</td>
+            </tr>
+        </tbody>
+    </table>
   <div>
       <p class="no-padding col-xs-6 pull-left">
           En caso de querer anular la inscripción via web, el código para hacerlo es: {{inscripcion.codigo}}

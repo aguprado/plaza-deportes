@@ -19,12 +19,18 @@
       </div>
       <div class="col-xs-12 form-group">
           <label class="col-xs-4">Cupo:</label>
-          <input class="form-control col-xs-6" required name="cupo" placeholder="Cupo" min="0" type="number" [(ngModel)]="group.cupo"/>
+          <input class="form-control col-xs-6" (change)="changeCupo()" required name="cupo" placeholder="Cupo" min="0" type="number" [(ngModel)]="group.cupo"/>
       </div>
       <div class="col-xs-12 form-group">
           <label class="col-xs-4">Horarios disponibles para agenda:</label>
-          <input *ngFor="let agenda of group.agendaGrupo; let i = index;" class="form-group form-control col-xs-6" required name="{{'agendaGrupo-'+i}}" placeholder="Día y hora" type="text" [(ngModel)]="group.agendaGrupo[i].diahora"/>
-      </div>
+          <ul class="col-xs-12 no-padding" *ngFor="let agenda of group.agendaGrupo; let i = index;">
+            <input [disabled]="agenda.tomado" name="{{'agendaGrupo-'+i}}" required class="agenda-input col-xs-6 nombre text-left" [(ngModel)]="agenda.diahora"/>
+            <li class="no-padding col-xs-6 text-center">
+              <span *ngIf="!agenda.tomado" class="libre col-xs-12 no-padding">Libre</span>
+              <span *ngIf="agenda.tomado" class="no-disponible col-xs-12 no-padding">Tomado</span>
+            </li>
+          </ul>
+       </div>
       <div class="col-xs-12 form-group">
          <ul class="col-xs-12 no-padding">
            <li class="no-padding col-xs-6"><input type="submit" value="Confirmar" class="form-control btn btn-success"/></li>

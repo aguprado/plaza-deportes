@@ -36,8 +36,9 @@ export class GroupEditComponent implements OnInit {
   }
 
   changeCupo() {
-    while (this.group.cupo != this.group.agendaGrupo.length) { 
-      this.group.cupo > this.group.agendaGrupo.length ? this.group.agendaGrupo.push( { diahora: '' } ) : this.group.agendaGrupo.pop();
+    if (this.group.cupo < this.group.agendaGrupo.length) { return this.group.cupo = this.group.agendaGrupo.length }
+    while (this.group.cupo > this.group.agendaGrupo.length) { 
+      this.group.agendaGrupo.push( { diahora: '' } );
     }
   }
 

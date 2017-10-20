@@ -153,7 +153,7 @@ router.route('/inscriptos-grupo')
         var url_parts = url.parse(req.url, true);
         var query = url_parts.query;
         if (!query.id) { return res.status(400).send() };
-        database.query('SELECT inscripcion.* from inscripcion INNER JOIN agendaGrupo ON inscripcion.idAgendaGrupo = agendaGrupo.id WHERE agendaGrupo.idGrupo = ?', [query.id], function (err, results, fields) {
+        database.query('SELECT inscripcion.*, agendaGrupo.diahora from inscripcion INNER JOIN agendaGrupo ON inscripcion.idAgendaGrupo = agendaGrupo.id WHERE agendaGrupo.idGrupo = ?', [query.id], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         })
@@ -196,8 +196,13 @@ router.route('/group')
         validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
             database.query('UPDATE grupo SET nombre = ?, descripcion = ?, dias = ?, horarios = ? WHERE id = ?', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.id], function (err, results, fields) {
-                if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
-                res.json(results);
+                let updated = 0;
+                for (var index = 0; index < req.body.agendaGrupo.length; index++) {
+                    database.query('UPDATE agendaGrupo SET diahora = ? WHERE id = ?', [req.body.agendaGrupo[index].diahora, req.body.agendaGrupo[index].id], function (err, results, fields) {
+                        if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
+                        updated+=1; if (updated == req.body.agendaGrupo.length) { res.json(true) };
+                    });           
+                }
             });
         });
     });
@@ -206,10 +211,13 @@ router.route('/group')
 router.route('/inscripcion/:codigo')
     .delete(function(req, res) {
         if (!req.params.codigo) { return res.status(400).send() };
-        database.query('DELETE FROM inscripcion WHERE codigo = ?', [req.params.codigo], function (err, results, fields) {
-            if (err){ console.log(err); return res.status(500).send(err) };
-            res.json(results);
-        })
+        database.query('UPDATE agendaGrupo SET idInscripcion = NULL, tomado = 0 WHERE idInscripcion IN (SELECT id FROM inscripcion WHERE codigo = ?)', [req.params.codigo], function (err, results, fields) {
+            if (err){ console.log(err); return res.status(500).send(err) };            
+            database.query('DELETE FROM inscripcion WHERE codigo = ?', [req.params.codigo], function (err, results, fields) {
+                if (err){ console.log(err); return res.status(500).send(err) };
+                res.send(true);
+            });
+        });
     });
 
 //admin

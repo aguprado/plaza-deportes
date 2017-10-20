@@ -14,7 +14,7 @@ export class NewGroupComponent {
   newGroup: {nombre: string, descripcion: string, dias: string, horarios: string, cupo: number, agendaGrupo: any[]};
   
   constructor(private apiService: ApiService, private router: Router) { 
-    this.newGroup = {nombre: null, descripcion: null, dias: null, horarios: null, cupo: 0, agendaGrupo: []};
+    this.newGroup = {nombre: null, descripcion: null, dias: null, horarios: null, cupo: 1, agendaGrupo: [{ diahora: '' }]};
   }
 
   crearGrupo() {

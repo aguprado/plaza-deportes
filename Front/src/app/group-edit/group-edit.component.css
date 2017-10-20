@@ -5,3 +5,44 @@ form {
 label {
     padding: 0;
 }
+
+ul {
+    list-style: none;
+    display: inline-flex;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+li.nombre {
+    border-right: 1px solid #ddd;
+    line-height: 30px;
+    padding: 3px 10px;
+}
+
+li {
+    border-radius: 5px;
+}
+
+button, span {
+    height: 100%;
+}
+
+span {
+    line-height: 35px;
+    color: #fff;
+}
+
+span.no-disponible {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+span.libre {
+    background-color: #4cae4c;
+    border-color: #4cae4c;
+}
+
+.agenda-input {
+    border: none;
+}
