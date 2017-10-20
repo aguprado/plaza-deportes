@@ -106,7 +106,7 @@ export class ApiService {
     }
         
     borrarInscripcionAdmin(id: number): Promise<any> {
-        let url = this.apiUrl+'/inscripcion/'+id+'?token='+this.token;
+        let url = this.apiUrl+'/inscripcion?id='+id+'&token='+this.token;
         return this.http.delete(url, this.options())
             .toPromise().then(response => {
                 return response.json();

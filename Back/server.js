@@ -113,7 +113,7 @@ router.route('/group')
             });
         });
     });
-
+/*
 router.route('/inscripcion/:id')
     .delete(function(req, res) {
         var url_parts = url.parse(req.url, true);
@@ -128,6 +128,7 @@ router.route('/inscripcion/:id')
             });
         });
     });
+*/
 
 router.route('/inscriptos-grupo')
     .get(function(req, res) {
