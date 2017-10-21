@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalModule } from 'ngx-modialog';
+import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 
 import { AppComponent } from './app.component';
 import { ApiService } from './services/apiService';
@@ -25,7 +27,7 @@ const appRoutes: Routes = [
   { path: 'group-edit/:id', component: GroupEditComponent, canActivate: [AuthGuard] },
   { path: 'group-enroll/:id', component: InscripcionComponent },
   { path: 'group-unroll', component: DesinscripcionComponent },
-  { path: 'confirmed/:documento/:idGroup', component: InscriptionReportComponent },
+  { path: 'confirmed/:id', component: InscriptionReportComponent },
   { path: 'new-group', component: NewGroupComponent, canActivate: [AuthGuard] },
   { path: '', component: GroupsListComponent },
   { path: '**', redirectTo: '' }
@@ -47,6 +49,8 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only

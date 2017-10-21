@@ -2,6 +2,7 @@ body {
     font-family: 'Lato', sans-serif !important;
     color: #333 !important;
     background: #F8F8F8 !important;
+    overflow-x: hidden;
 }
 
 .no-padding {
@@ -21,9 +22,21 @@ input {
 }
 
 .container {
-    margin-top: 40px;
+    margin: 40px 0;
 }
 
 ul {
     list-style: none;
+}
+
+th {
+    text-align: center !important;
+}
+
+.foot {
+    position: absolute;
+    bottom: 0;
+    color: gray;
+    width: 100%;
+    text-align: center;
 }

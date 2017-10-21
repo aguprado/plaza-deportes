@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs';
 import { ApiService } from '../services/apiService';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Group } from '../models/Group';
+import { Overlay } from 'ngx-modialog';
+import { Modal } from 'ngx-modialog/plugins/bootstrap';
 
 @Component({
   selector: 'app-inscripcion',
@@ -16,7 +18,7 @@ export class InscripcionComponent implements OnInit {
   group: Group;
   inscripcion: {documento: string, nombre: string, fnacimiento: Date, edad: number, diahora: string, idAgenda: number};
 
-  constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) {
+  constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute, public modal: Modal) {
     this.paramsSubscription = this.route.params.subscribe(params => {
         this.idGrupo = params['id'];
         this.inscripcion = {documento: null, nombre: null, fnacimiento: new Date(), edad: 0, diahora: '', idAgenda: 0 };
@@ -30,9 +32,18 @@ export class InscripcionComponent implements OnInit {
   }
 
   confirmarInscripcion() {
-    if (!this.inscripcion.idAgenda) { return };
+    if (!this.inscripcion.idAgenda) { 
+      return this.modal.alert()
+      .size('sm')
+      .showClose(true)
+      .title('Selección de hora')
+      .body('<p>Debes seleccionar una hora</p>')
+      .okBtn('Entendido')
+      .okBtnClass('btn btn-primary')
+      .open();
+     };
     this.apiService.inscribirse(this.inscripcion).then(response => {
-      this.router.navigate(['/confirmed', this.inscripcion.documento, this.inscripcion.idAgenda]);
+      this.router.navigate(['/confirmed', response.id]);
     });
   }
 

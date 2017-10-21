@@ -18,7 +18,6 @@ export class NewGroupComponent {
   }
 
   crearGrupo() {
-    debugger;
     let group: Group = new Group(this.newGroup);
     this.apiService.createGroup(group).then(response => {
       this.router.navigate(['/groups-list']);

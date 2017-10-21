@@ -15,10 +15,10 @@ export class InscriptionReportComponent {
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute) { 
     this.paramsSubscription = this.route.params.subscribe(params => {
-        let documento = params['documento'];
-        let idAgenda = params['idAgenda'];    
-        let inscripcion = apiService.getUltimaInscripcion();
-        if (inscripcion && inscripcion.documento == documento && inscripcion.idGrupo == idAgenda) { this.inscripcion = inscripcion };
+        let idInscripcion = params['id'];    
+        this.apiService.getInscripcion(idInscripcion).then(response => {
+          this.inscripcion = response.pop();
+        });
     });
   }
 
@@ -27,8 +27,6 @@ export class InscriptionReportComponent {
     return newDate.getDate()+'-'+(newDate.getMonth()+1)+'-'+newDate.getFullYear();
   }
 
-  print() {
-    window.print();
-  }
+  print() { window.print() }
 
 }

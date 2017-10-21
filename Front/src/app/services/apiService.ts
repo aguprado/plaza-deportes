@@ -11,7 +11,6 @@ export class ApiService {
     apiUrl = 'http://52.67.131.86:8081';
     //apiUrl = 'http://localhost:8081';
     token:string = '';
-    ultimaInscripcion: any;
 
     constructor(private http: Http, private loadingService: LoadingService) {}
     
@@ -118,9 +117,7 @@ export class ApiService {
         return this.http.post(url, body, this.options())
             .toPromise().then(response => {
                 this.loadingService.loaderStop();
-                let inscripcion = response.json();
-                if (inscripcion) { this.ultimaInscripcion = inscripcion };
-                return inscripcion;
+                return response.json();
             }).catch(this.handleError);
     }
         
@@ -134,14 +131,18 @@ export class ApiService {
             }).catch(this.handleError);
     }
 
-    getUltimaInscripcion() {
-        return this.ultimaInscripcion;
+    getInscripcion(id: number): Promise<any> {
+        this.loadingService.loaderStart();
+        let url = this.apiUrl+'/inscripcion/'+id;
+        return this.http.get(url, this.options())
+            .toPromise().then(response => {
+                this.loadingService.loaderStop();
+                return response.json();
+            }).catch(this.handleError);
     }
 
-    //rejects the promise if error in the call
     handleError(error: any) {
         this.loadingService.loaderStop();
-        let errMsg = error.statusText || 'Server error';
-        return console.error(errMsg);
+        return console.log(error);
     }
 }

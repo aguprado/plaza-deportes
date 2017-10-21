@@ -5,3 +5,8 @@ form {
 label {
     padding: 0;
 }
+
+ul.buttons {
+    background: no-repeat;
+    border: none;
+}

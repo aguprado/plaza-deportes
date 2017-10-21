@@ -132,22 +132,6 @@ router.route('/group')
             });
         });
     });
-/*
-router.route('/inscripcion/:id')
-    .delete(function(req, res) {
-        var url_parts = url.parse(req.url, true);
-        var query = url_parts.query;
-        if (!query.token) { return res.status(400).send() };
-        validateToken(query.token, function(result) {
-            if (!result) { return res.status(401).send() }; 
-            if (!req.params.id) { return res.status(400).send() };
-            database.query('DELETE FROM inscripcion WHERE id = ?', [req.params.id], function (err, results, fields) {
-                if (err){ console.log(err); return res.status(500).send(err) };
-                res.json(results);
-            });
-        });
-    });
-*/
 
 router.route('/inscriptos-grupo')
     .get(function(req, res) {
@@ -158,6 +142,15 @@ router.route('/inscriptos-grupo')
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         })
+    });
+
+router.route('/inscripcion/:id')
+    .get(function(req, res) {
+        if (!req.params.id) { return res.status(400).send() };
+        database.query('SELECT inscripcion.*, grupo.nombre as nombregrupo, grupo.descripcion, grupo.dias, grupo.horarios, agendaGrupo.* FROM inscripcion INNER JOIN agendaGrupo ON inscripcion.idAgendaGrupo = agendaGrupo.id INNER JOIN grupo on grupo.id = agendaGrupo.idGrupo WHERE inscripcion.id = ?', [req.params.id], function (err, results, fields) {
+            if (err){ console.log(err); return res.status(500).send(err) };
+            res.json(results);
+        });
     });
 
 router.route('/groups')
@@ -246,9 +239,10 @@ router.route('/inscripcion')
         if (!req.body || !req.body.idAgenda || !req.body.documento || !req.body.nombre || !req.body.fnacimiento || !req.body.edad || !req.body.diahora ) { return res.status(400).send() };
         database.query('INSERT INTO inscripcion (documento, nombre, fnacimiento, edad, idAgendaGrupo, codigo) VALUES (?, ?, ?, ?, ?, ?)', [req.body.documento, req.body.nombre, req.body.fnacimiento, req.body.edad, req.body.idAgenda, codigo], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
-            database.query('UPDATE agendaGrupo SET idInscripcion = ?, tomado = 1 WHERE id = ?', [results.insertId, req.body.idAgenda], function (err, results, fields) {
+            var inscripcionId = results.insertId;
+            database.query('UPDATE agendaGrupo SET idInscripcion = ?, tomado = 1 WHERE id = ?', [inscripcionId, req.body.idAgenda], function (err, results, fields) {
                 if (err){ console.log(err); return res.status(500).send(err) };
-                res.json({documento: req.body.documento, idAgenda: req.body.idAgenda, nombre: req.body.nombre, fnacimiento: req.body.fnacimiento, edad: req.body.edad, diahora: req.body.diahora, codigo: codigo});
+                res.json({id: inscripcionId});
             });
         });
     });

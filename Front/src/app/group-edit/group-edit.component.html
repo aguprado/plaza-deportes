@@ -1,4 +1,4 @@
-<div *ngIf="group" class="col-xs-10 col-xs-offset-1 container" [style.height]="innerHeight">
+<div *ngIf="group" class="col-xs-10 col-xs-offset-1 container">
     <h4 class="pull-left">Editar grupo</h4>
     <form class="col-xs-8 col-xs-offset-1" (submit)="actualizarGrupo()" ngNativeValidate>
       <div class="col-xs-12 form-group">
@@ -22,20 +22,23 @@
           <input class="form-control col-xs-6" (change)="changeCupo()" required name="cupo" placeholder="Cupo" min="0" type="number" [(ngModel)]="group.cupo"/>
       </div>
       <div class="col-xs-12 form-group">
-          <label class="col-xs-4">Horarios disponibles para agenda:</label>
-          <ul class="col-xs-12 no-padding" *ngFor="let agenda of group.agendaGrupo; let i = index;">
-            <input [disabled]="agenda.tomado" name="{{'agendaGrupo-'+i}}" required class="agenda-input col-xs-6 nombre text-left" [(ngModel)]="agenda.diahora"/>
-            <li class="no-padding col-xs-6 text-center">
-              <span *ngIf="!agenda.tomado" class="libre col-xs-12 no-padding">Libre</span>
-              <span *ngIf="agenda.tomado" class="no-disponible col-xs-12 no-padding">Tomado</span>
-            </li>
-          </ul>
-       </div>
+        <label class="col-xs-4">Horarios disponibles para agenda:</label>
+        <ul class="col-xs-12 no-padding" *ngFor="let agenda of group.agendaGrupo; let i = index;">
+          <input [disabled]="agenda.tomado" name="{{'agendaGrupo-'+i}}" placeholder="Día y hora" required class="agenda-input col-xs-6 nombre text-left" [(ngModel)]="agenda.diahora"/>
+          <li class="no-padding col-xs-6 text-center">
+            <span *ngIf="!agenda.tomado" class="libre col-xs-12 no-padding">Libre</span>
+            <span *ngIf="agenda.tomado" class="no-disponible col-xs-12 no-padding">Tomado</span>
+          </li>
+        </ul>
+      </div>
       <div class="col-xs-12 form-group">
-         <ul class="col-xs-12 no-padding">
-           <li class="no-padding col-xs-6"><input type="submit" value="Confirmar" class="form-control btn btn-success"/></li>
-           <li class="no-padding col-xs-6"><input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/></li>
+         <ul class="buttons col-xs-12 no-padding">
+           <li class="no-padding col-xs-4 col-xs-offset-1"><input type="submit" value="Confirmar" class="form-control btn btn-success"/></li>
+           <li class="no-padding col-xs-4 col-xs-offset-2"><input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/></li>
          </ul>
      </div>
     </form>
+  </div>
+  <div class="foot">
+      <p class="col-xs-12 text-center">Desarrollado por Soluciones Empresariales - L.Gómez 804 - Tel. 472 56675 - Paysandú, Uruguay</p>
   </div>

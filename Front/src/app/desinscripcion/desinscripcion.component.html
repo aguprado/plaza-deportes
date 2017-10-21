@@ -1,4 +1,4 @@
-<div class="col-xs-10 col-xs-offset-1 container" [style.height]="innerHeight">
+<div class="col-xs-10 col-xs-offset-1 container">
     <div class="col-xs-2">
       <h4 class="pull-left">Anular agenda para inscripción a grupo</h4>
       <p>
@@ -11,10 +11,13 @@
           <input class="form-control col-xs-6" type="number" required name="codigo" placeholder="Ingesa el código" maxlength="100" [(ngModel)]="codigo"/>
       </div>
       <div class="col-xs-12 form-group">
-          <ul class="col-xs-12 no-padding">
-            <li class="no-padding col-xs-6"><input type="submit" value="Confirmar" class="form-control btn btn-success"/></li>
-            <li class="no-padding col-xs-6"><input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/></li>
+          <ul class="buttons col-xs-12 no-padding">
+            <li class="no-padding col-xs-4 col-xs-offset-1"><input type="submit" value="Confirmar" class="form-control btn btn-success"/></li>
+            <li class="no-padding col-xs-4 col-xs-offset-2"><input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/></li>
           </ul>
       </div>
     </form>
+  </div>
+  <div class="foot">
+      <p class="col-xs-12 text-center">Desarrollado por Soluciones Empresariales - L.Gómez 804 - Tel. 472 56675 - Paysandú, Uruguay</p>
   </div>

@@ -46,3 +46,8 @@ span.libre {
 .agenda-input {
     border: none;
 }
+
+ul.buttons {
+    background: no-repeat;
+    border: none;
+}

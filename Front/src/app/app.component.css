@@ -18,3 +18,17 @@ h4, h5 {
     left: 0;
     overflow: hidden;
 }
+
+img {
+    position: absolute;
+    top: 5px;
+    padding: 0;
+}
+
+.img-left {
+    left: -2%;
+}
+
+.img-right {
+    right: -2%;
+}

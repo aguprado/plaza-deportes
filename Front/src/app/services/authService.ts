@@ -46,10 +46,13 @@ export class AuthService {
         return this.http.post(url, body, this.options()).toPromise()
             .then(response => {
                 this.loadingService.loaderStop();
-                localStorage.setItem('token', response.json().token);
-                this.logged = true;
-                this.authAnnouncedSource.next(true);
-                return response.json();
+                let result = response.json();
+                if (result) {
+                    this.logged = true;
+                    localStorage.setItem('token', result.token);
+                    this.authAnnouncedSource.next(true);
+                }
+                return result;
             }).catch(this.handleError);
     }
 
@@ -71,8 +74,6 @@ export class AuthService {
 
     handleError(error: any) {
         this.loadingService.loaderStop();
-        // In a real world app, we might send the error to remote logging infrastructure
-        let errMsg = error.statusText || 'Server error';
-        return console.log(errMsg); // log to console instead
+        return console.log(error);
     }
 }

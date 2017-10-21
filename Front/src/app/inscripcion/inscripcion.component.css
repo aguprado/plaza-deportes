@@ -42,3 +42,12 @@ span.no-disponible {
     background-color: #d9534f;
     border-color: #d43f3a;
 }
+
+ul.buttons {
+    background: no-repeat;
+    border: none;
+}
+
+h4 {
+    line-height: 30px;
+}
