@@ -35,11 +35,12 @@ export class GroupEditComponent implements OnInit {
     });
   }
 
-  changeCupo() {
+  changeCupo() {/*
     if (this.group.cupo < this.group.agendaGrupo.length) { return this.group.cupo = this.group.agendaGrupo.length }
     while (this.group.cupo > this.group.agendaGrupo.length) { 
       this.group.agendaGrupo.push( { diahora: '' } );
-    }
+    }*/
+    return this.group.cupo = this.group.agendaGrupo.length
   }
 
   ngOnDestroy() { this.paramsSubscription.unsubscribe() }

@@ -3,7 +3,7 @@
 <h5 class="text-center">Paysandú, Uruguay</h5>
 <img class="col-xs-2 img-left" src="https://s3-sa-east-1.amazonaws.com/plaza-deportes/assets/logo.png" />
 <img class="col-xs-2 img-right" src="https://s3-sa-east-1.amazonaws.com/plaza-deportes/assets/logo.png" />
-<div [hidden]="loading" class="col-xs-12">
+<div [hidden]="loading" class="col-xs-12" [style.minHeight]="innerHeight">
     <router-outlet></router-outlet>
 </div>
 <div class="text-center col-xs-12 loading" [hidden]="!loading">

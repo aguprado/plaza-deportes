@@ -26,8 +26,8 @@ export class AppComponent implements OnInit{
   ngOnInit() { 
     let token = localStorage.getItem('token');
     if (token) { this.authenticationService.validateToken(token) };    
-    this.innerHeight = (window.innerHeight-140)+'px';
-    $(window).resize(() => {this.innerHeight = (window.innerHeight-140)+'px';});
+    this.innerHeight = (window.innerHeight-120)+'px';
+    $(window).resize(() => {this.innerHeight = (window.innerHeight-120)+'px';});
   }
 
   ngOnDestroy() { this.loadingSubscription.unsubscribe() }
