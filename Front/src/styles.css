@@ -40,3 +40,17 @@ th {
     width: 100%;
     text-align: center;
 }
+
+.print {
+    visibility: hidden;
+}
+
+@media print {
+    /* style sheet for print goes here */
+    .noprint {
+        visibility: hidden;
+    }
+    .print {
+        visibility: visible;
+    }
+}

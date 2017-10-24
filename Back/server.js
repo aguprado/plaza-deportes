@@ -19,8 +19,8 @@ app.all('*', function(req, res, next) {
 var database = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
-    password : '41842930',
-    //password : '',
+    //password : '41842930',
+    password : '',
     database : 'plazadeportes'
 });
 
@@ -155,7 +155,7 @@ router.route('/inscripcion/:id')
 
 router.route('/groups')
     .get(function(req, res) {
-        database.query('SELECT grupo.*, COUNT(agendaGrupo.idInscripcion) as inscriptos FROM grupo LEFT JOIN agendaGrupo ON grupo.id = agendaGrupo.idGrupo GROUP BY grupo.id', [], function (err, results, fields) {
+        database.query('SELECT grupo.*, COUNT(agendaGrupo.idInscripcion) as inscriptos FROM grupo LEFT JOIN agendaGrupo ON grupo.id = agendaGrupo.idGrupo GROUP BY grupo.id ORDER BY grupo.nombre, grupo.descripcion', [], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             res.json(results);
         });
@@ -231,7 +231,7 @@ router.route('/inscripcion')
             });
         });
     });
-
+    
 router.route('/inscripcion')
     .post(function(req, res) {
         //random code

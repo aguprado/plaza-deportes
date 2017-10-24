@@ -56,6 +56,8 @@ export class GroupDetailComponent implements OnInit {
     return newDate.getDate()+'-'+(newDate.getMonth()+1)+'-'+newDate.getFullYear();
   }
 
+  print() { window.print() }
+  
   ngOnDestroy() { this.paramsSubscription.unsubscribe() }
 
 }

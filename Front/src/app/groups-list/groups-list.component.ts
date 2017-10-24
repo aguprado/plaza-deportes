@@ -60,6 +60,8 @@ export class GroupsListComponent implements OnInit {
 
   logout() { this.authService.logout() }
 
+  print() { window.print() }
+  
   ngOnDestroy() { this.authSubscription.unsubscribe() }
 
 }

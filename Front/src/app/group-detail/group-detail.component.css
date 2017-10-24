@@ -13,3 +13,7 @@ tbody td {
 td {
     text-align: center;
 }
+
+.noprint {
+    margin-left: 10px;
+}

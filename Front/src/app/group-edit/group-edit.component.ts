@@ -42,7 +42,7 @@ export class GroupEditComponent implements OnInit {
     }*/
     return this.group.cupo = this.group.agendaGrupo.length
   }
-
+  
   ngOnDestroy() { this.paramsSubscription.unsubscribe() }
 
 }
