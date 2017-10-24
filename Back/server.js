@@ -140,7 +140,10 @@ router.route('/inscriptos-grupo')
         if (!query.id) { return res.status(400).send() };
         database.query('SELECT inscripcion.*, agendaGrupo.diahora from inscripcion INNER JOIN agendaGrupo ON inscripcion.idAgendaGrupo = agendaGrupo.id WHERE agendaGrupo.idGrupo = ?', [query.id], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
-            res.json(results);
+            database.query('SELECT nombre FROM grupo WHERE id = ?', [query.id], function (err, nombre, fields) {
+                if (err){ console.log(err); return res.status(500).send(err) };
+                res.json({inscriptos: results, nombre: nombre.pop()});
+            })
         })
     });
 

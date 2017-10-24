@@ -42,15 +42,20 @@ th {
 }
 
 .print {
+    display: none;
     visibility: hidden;
 }
 
 @media print {
     /* style sheet for print goes here */
     .noprint {
+        width: 0 !important;
+        display: none;
         visibility: hidden;
     }
+    /* style sheet for print goes here */
     .print {
+        display: block;
         visibility: visible;
     }
 }

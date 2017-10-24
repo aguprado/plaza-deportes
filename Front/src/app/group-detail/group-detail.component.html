@@ -1,10 +1,11 @@
 <div class="col-xs-10 col-xs-offset-1 container">
-    <div class="no-padding col-xs-3 pull-left">
-      <h4 class="no-padding pull-left col-xs-12">Detalle de agendas al grupo</h4>
-      <button class="noprint btn btn-success pull-left col-xs-4" routerLink="/groups-list">Volver</button>
-      <button class="noprint btn btn-info col-xs-4" (click)="print()">Imprimir</button>
+    <div class="noprint no-padding col-xs-3 pull-left">
+      <h4 class="no-padding pull-left col-xs-12">Detalle de agendas al grupo {{nombreGrupo}}</h4>
+      <button class="btn btn-success pull-left col-xs-4" routerLink="/groups-list">Volver</button>
+      <button class="btn btn-info col-xs-4" (click)="print()">Imprimir</button>
     </div>
     <div class="col-xs-9 table-container">
+      <h4 class="print pull-left col-xs-12">Detalle de agendas al grupo {{nombreGrupo}}</h4>
       <table class="table table-bordered">
           <thead>
             <tr>

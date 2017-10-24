@@ -18,11 +18,7 @@ export class ApiService {
         let headers = new Headers({'Content-Type': 'application/json'});
         return new RequestOptions({headers: headers});
     }
-/*
-    borrarInscripcion(id).then(response => {
-        this.apiService.loadInscriptosGrupo(this.idGrupo)
-*/
-
+    
     createGroup(group: Group): Promise<any> {
         this.loadingService.loaderStart();
         this.token = localStorage.getItem('token');

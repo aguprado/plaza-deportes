@@ -16,6 +16,7 @@ export class GroupDetailComponent implements OnInit {
   paramsSubscription: Subscription;
   inscriptos = [];
   idGrupo: number;
+  nombreGrupo: string; 
 
   constructor(private authService: AuthService, private apiService: ApiService, private router: Router, private route: ActivatedRoute, public modal: Modal) {
     this.paramsSubscription = this.route.params.subscribe(params => {
@@ -25,7 +26,8 @@ export class GroupDetailComponent implements OnInit {
   
   ngOnInit() {
     this.apiService.loadInscriptosGrupo(this.idGrupo).then(response => {
-      this.inscriptos = response;
+      this.inscriptos = response.inscriptos;
+      response.nombre ? this.nombreGrupo = response.nombre.nombre : '';
     });
   }
 
@@ -44,7 +46,8 @@ export class GroupDetailComponent implements OnInit {
       dialog.result.then( result => {
         this.apiService.borrarInscripcionAdmin(id).then(response => {
           this.apiService.loadInscriptosGrupo(this.idGrupo).then(response => {
-            this.inscriptos = response;
+            this.inscriptos = response.inscriptos;
+            response.nombre ? this.nombreGrupo = response.nombre.nombre : '';
           });
         });
       }).catch(result => {});
