@@ -1,5 +1,10 @@
 <div *ngIf="group" class="col-xs-10 col-xs-offset-1 container">
-    <h4 class="pull-left col-xs-3 no-padding">Agenda para inscripción al grupo {{group.nombre}}</h4>
+    <div class="no-padding col-xs-3 pull-left">
+      <h4>Agenda para inscripción al grupo {{group.nombre}}</h4>
+      <p>
+          Si el niño presenta algún síndrome físico o intelectual, debe solicitar entrevista anteriormente con la dirección de piscina, con la finalidad de coordinar las condiciones del ingreso y brindarle un mejor servicio.
+      </p>
+    </div>
     <form class="col-xs-8 col-xs-offset-1" (submit)="confirmarInscripcion()" ngNativeValidate>
       <div class="col-xs-12 form-group">
           <label class="col-xs-4">Cédula:</label>
