@@ -24,4 +24,8 @@ td {
     .table-container {
         width: 100% !important;
     }
+    .table-container h4 {
+        text-align: center;
+    }
 }
+

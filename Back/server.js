@@ -163,7 +163,28 @@ router.route('/groups')
             res.json(results);
         });
     });
-    
+
+router.route('/get-inscripciones')
+    .get(function(req, res) {
+        database.query('SELECT inscripciones FROM usuario WHERE nombre = \'admin\'', [], function (err, results, fields) {
+            if (err){ console.log(err); return res.status(500).send(err) };
+            res.json(results.pop());
+        });
+    });
+
+router.route('/set-inscripciones')
+    .post(function(req, res) {
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        if (!query.token) { return res.status(400).send() };
+        validateToken(query.token, function(result) {
+            if (!result) { return res.status(401).send() }; 
+            database.query('UPDATE usuario SET inscripciones = ? WHERE nombre = \'admin\'', [req.body.value], function (err, results, fields) {
+                res.json(true);
+            });
+        });
+    });
+
 router.route('/group')
     .post(function(req, res) {
         var url_parts = url.parse(req.url, true);

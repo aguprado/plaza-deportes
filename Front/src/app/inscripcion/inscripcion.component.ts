@@ -16,12 +16,12 @@ export class InscripcionComponent implements OnInit {
   paramsSubscription: Subscription;
   idGrupo: number;
   group: Group;
-  inscripcion: {documento: string, nombre: string, fnacimiento: Date, edad: number, diahora: string, idAgenda: number};
+  inscripcion: {documento: string, nombre: string, fnacimiento: string, edad: number, diahora: string, idAgenda: number};
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute, public modal: Modal) {
     this.paramsSubscription = this.route.params.subscribe(params => {
         this.idGrupo = params['id'];
-        this.inscripcion = {documento: null, nombre: null, fnacimiento: new Date(), edad: 0, diahora: '', idAgenda: 0 };
+        this.inscripcion = {documento: null, nombre: null, fnacimiento: '', edad: 0, diahora: '', idAgenda: 0 };
     });
   }
   
@@ -32,6 +32,7 @@ export class InscripcionComponent implements OnInit {
   }
 
   confirmarInscripcion() {
+    debugger;
     if (!this.inscripcion.idAgenda) { 
       return this.modal.alert()
       .size('sm')

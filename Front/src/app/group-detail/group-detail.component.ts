@@ -55,8 +55,8 @@ export class GroupDetailComponent implements OnInit {
   }
 
   formatDate(date) {
-    let newDate = new Date(date);
-    return newDate.getDate()+'-'+(newDate.getMonth()+1)+'-'+newDate.getFullYear();
+    let matches = date.match(/(\d\d\d\d)-(\d\d)-(\d\d)/);
+    return matches[3]+'-'+matches[2]+'-'+matches[1];
   }
 
   print() { window.print() }

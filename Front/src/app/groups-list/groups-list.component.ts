@@ -18,6 +18,7 @@ export class GroupsListComponent implements OnInit {
   //innerHeight: string;
   authSubscription: Subscription;
   logged: boolean = false;
+  inscripciones: boolean = false;
   groups = [];
 
   constructor(private authService: AuthService, private apiService: ApiService, public modal: Modal) {
@@ -30,10 +31,10 @@ export class GroupsListComponent implements OnInit {
   ngOnInit() {
     this.apiService.loadGroups().then(response => {
       this.groups = response;
+    });   
+     this.apiService.getInscripciones().then(response => {
+      this.inscripciones = response.inscripciones;
     });
-    /*
-    this.innerHeight = (window.innerHeight)+'px';
-    $(window).resize(() => {this.innerHeight = (window.innerHeight-30)+'px';});*/
   }
 
   borrarGrupo(id) {    
@@ -55,6 +56,12 @@ export class GroupsListComponent implements OnInit {
           });
         });
       }).catch(result => {});
+    });
+  }
+
+  setInscripciones(value) { 
+    this.apiService.setInscripciones(value).then(response => {
+      this.inscripciones = value;
     });
   }
 

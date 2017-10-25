@@ -53,6 +53,28 @@ export class ApiService {
                 return response.json();
             }).catch(this.handleError);
     }
+    
+    getInscripciones(): Promise<any> {
+        this.loadingService.loaderStart();
+        let url = this.apiUrl+'/get-inscripciones';
+        return this.http.get(url, this.options()).toPromise()
+            .then(response => {
+                this.loadingService.loaderStop();
+                return response.json();
+            }).catch(this.handleError);
+    }
+        
+    setInscripciones(value): Promise<any> {
+        this.loadingService.loaderStart();
+        this.token = localStorage.getItem('token');
+        let body = JSON.stringify({value: value});
+        let url = this.apiUrl+'/set-inscripciones?token='+this.token;
+        return this.http.post(url, body, this.options()).toPromise()
+            .then(response => {
+                this.loadingService.loaderStop();
+                return response.json();
+            }).catch(this.handleError);
+    }
 
     loadGroups(): Promise<any> {
         this.loadingService.loaderStart();

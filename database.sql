@@ -3,6 +3,7 @@ CREATE TABLE usuario (
   nombre varchar(256) NOT NULL,
   password varchar(256) NOT NULL,
   token varchar(256),
+  inscripciones tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 );
 
