@@ -33,6 +33,10 @@ th {
     text-align: center !important;
 }
 
+td {
+    line-height: 30px !important;
+}
+
 .foot {
     position: absolute;
     bottom: 0;
@@ -57,5 +61,9 @@ th {
     .print {
         display: block;
         visibility: visible;
+    }
+    td {
+        line-height: unset !important;
+        font-size: 12px;
     }
 }

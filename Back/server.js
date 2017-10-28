@@ -260,8 +260,8 @@ router.route('/inscripcion')
     .post(function(req, res) {
         //random code
         var codigo = Math.floor(100000 + Math.random() * 900000);
-        if (!req.body || !req.body.idAgenda || !req.body.documento || !req.body.nombre || !req.body.fnacimiento || !req.body.edad || !req.body.diahora ) { return res.status(400).send() };
-        database.query('INSERT INTO inscripcion (documento, nombre, fnacimiento, edad, idAgendaGrupo, codigo) VALUES (?, ?, ?, ?, ?, ?)', [req.body.documento, req.body.nombre, req.body.fnacimiento, req.body.edad, req.body.idAgenda, codigo], function (err, results, fields) {
+        if (!req.body || !req.body.idAgenda || !req.body.documento || !req.body.nombre || !req.body.contacto || !req.body.fnacimiento || !req.body.edad || !req.body.diahora ) { return res.status(400).send() };
+        database.query('INSERT INTO inscripcion (documento, nombre, contacto, fnacimiento, edad, idAgendaGrupo, codigo) VALUES (?, ?, ?, ?, ?, ?, ?)', [req.body.documento, req.body.nombre, req.body.contacto, req.body.fnacimiento, req.body.edad, req.body.idAgenda, codigo], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
             var inscripcionId = results.insertId;
             database.query('UPDATE agendaGrupo SET idInscripcion = ?, tomado = 1 WHERE id = ?', [inscripcionId, req.body.idAgenda], function (err, results, fields) {

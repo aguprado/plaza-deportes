@@ -16,12 +16,12 @@ ul {
 
 li.nombre {
     border-right: 1px solid #ddd;
-    line-height: 30px;
     padding: 3px 10px;
 }
 
 li {
     border-radius: 5px;
+    line-height: 30px;
 }
 
 button, span {

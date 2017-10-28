@@ -16,12 +16,12 @@ export class InscripcionComponent implements OnInit {
   paramsSubscription: Subscription;
   idGrupo: number;
   group: Group;
-  inscripcion: {documento: string, nombre: string, fnacimiento: string, edad: number, diahora: string, idAgenda: number};
+  inscripcion: {documento: string, nombre: string, fnacimiento: string, contacto: string, edad: number, diahora: string, idAgenda: number};
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute, public modal: Modal) {
     this.paramsSubscription = this.route.params.subscribe(params => {
         this.idGrupo = params['id'];
-        this.inscripcion = {documento: null, nombre: null, fnacimiento: '', edad: 0, diahora: '', idAgenda: 0 };
+        this.inscripcion = {documento: null, nombre: null, fnacimiento: '', contacto: '', edad: 0, diahora: '', idAgenda: 0 };
     });
   }
   
@@ -32,7 +32,6 @@ export class InscripcionComponent implements OnInit {
   }
 
   confirmarInscripcion() {
-    debugger;
     if (!this.inscripcion.idAgenda) { 
       return this.modal.alert()
       .size('sm')
@@ -57,12 +56,3 @@ export class InscripcionComponent implements OnInit {
   ngOnDestroy() { this.paramsSubscription.unsubscribe() }
 
 }
-
-/*
-      <div class="col-xs-12 form-group">
-          <ul class="col-xs-12 no-padding">
-            <li class="col-xs-5 no-padding"><input type="submit" value="Confirmar" class="form-control btn btn-success"/></li>
-            <li class="col-xs-5 col-xs-offset-1 no-padding"><input value="Cancelar" routerLink="/groups-list" class="form-control btn btn-danger"/></li>
-          </ul>
-      </div>
-*/

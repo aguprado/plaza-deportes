@@ -32,6 +32,7 @@ CREATE TABLE inscripcion (
   documento varchar(15) NOT NULL,
   nombre varchar(256) NOT NULL,
   fnacimiento varchar(256) NOT NULL,
+  contacto varchar(256) NOT NULL,
   edad int(5) NOT NULL,
   idAgendaGrupo int(10) unsigned NOT NULL,
   codigo varchar(256) NOT NULL,

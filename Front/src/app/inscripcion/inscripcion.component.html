@@ -23,6 +23,10 @@
           <input class="form-control col-xs-6" required name="edad" disabled placeholder="Tu edad" type="number" [(ngModel)]="inscripcion.edad"/>
       </div>
       <div class="col-xs-12 form-group">
+          <label class="col-xs-4">Teléfono o celular de contacto:</label>
+          <input class="form-control col-xs-6" required name="contacto" placeholder="Tu teléfono o celular de contacto" type="text" [(ngModel)]="inscripcion.contacto"/>
+      </div>
+      <div class="col-xs-12 form-group">
           <label class="col-xs-4">Seleccionar horario para agenda:</label>
           <ul class="col-xs-12 no-padding" *ngFor="let agenda of group.agendaGrupo; let i = index;">
             <li class="col-xs-6 nombre text-left">{{agenda.diahora}}</li>

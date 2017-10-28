@@ -1,7 +1,4 @@
 
-tbody td {
-    line-height: 30px;
-}
 
 td {
     text-align: center;
@@ -15,7 +12,6 @@ ul {
 
 li {
     margin-left: 10px;
-    line-height: 32px;
 }
 
 .buttons {

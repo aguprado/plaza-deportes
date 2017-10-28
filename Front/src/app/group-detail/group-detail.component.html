@@ -13,6 +13,7 @@
               <th>Nombre</th>
               <th>Fecha de nacimiento</th>
               <th>Edad</th>
+              <th>Contacto</th>
               <th>Agenda</th>
               <th class="noprint">Acciones</th>
             </tr>
@@ -24,6 +25,7 @@
                   <td>{{inscripto.nombre}}</td>
                   <td>{{formatDate(inscripto.fnacimiento)}}</td>
                   <td>{{inscripto.edad}}</td>
+                  <td>{{inscripto.contacto}}</td>
                   <td>{{inscripto.diahora}}</td>
                   <td class="noprint"><button class="col-xs-12 btn btn-danger" (click)="borrarInscripcion(inscripto.id)">Borrar</button></td>
               </tr>
