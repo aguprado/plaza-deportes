@@ -6,6 +6,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Overlay } from 'ngx-modialog';
 import { Modal } from 'ngx-modialog/plugins/bootstrap';
 
+declare let moment: any;
+
 @Component({
   selector: 'app-group-detail',
   templateUrl: './group-detail.component.html',
@@ -54,10 +56,7 @@ export class GroupDetailComponent implements OnInit {
     });
   }
 
-  formatDate(date) {
-    let matches = date.match(/(\d\d\d\d)-(\d\d)-(\d\d)/);
-    return matches[3]+'-'+matches[2]+'-'+matches[1];
-  }
+  formatDate(date) { return moment(date).format("DD-MM-YYYY") }
 
   print() { window.print() }
   

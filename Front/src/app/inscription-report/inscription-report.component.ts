@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs';
 import { ApiService } from '../services/apiService';
 import { Router, ActivatedRoute } from '@angular/router';
 
+declare let moment: any;
+
 @Component({
   selector: 'inscription-report',
   templateUrl: './inscription-report.component.html',
@@ -22,10 +24,7 @@ export class InscriptionReportComponent {
     });
   }
 
-  formatDate(date) {
-    let matches = date.match(/(\d\d\d\d)-(\d\d)-(\d\d)/);
-    return matches[3]+'-'+matches[2]+'-'+matches[1];
-  }
+  formatDate(date) { return moment(date).format("DD-MM-YYYY") }
 
   print() { window.print() }
 
