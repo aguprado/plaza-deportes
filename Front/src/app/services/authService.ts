@@ -3,13 +3,16 @@ import { Headers, RequestOptions, Http, Response } from '@angular/http';
 import { Subject } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { LoadingService } from './loadingService';
+import { Router } from '@angular/router';
+import { Overlay } from 'ngx-modialog';
+import { Modal } from 'ngx-modialog/plugins/bootstrap';
 
 @Injectable()
 export class AuthService {
 
     private authAnnouncedSource = new Subject<boolean>();
 
-    constructor(private http: Http, private loadingService: LoadingService) { }
+    constructor(private http: Http, private router: Router, private loadingService: LoadingService, public modal: Modal) { }
     
     private logged: boolean = false;
     config = { endpoint: 'http://52.67.131.86:8081' };
@@ -23,9 +26,9 @@ export class AuthService {
         return new RequestOptions({headers: headers});
     }
 
-    getLoggedStatus() { return this.logged };
+    public getLoggedStatus() { return this.logged };
 
-    validateToken(token:string): Promise<any> {
+    public validateToken(token:string): Promise<any> {
         this.loadingService.loaderStart();
         let url = `${this.config.endpoint}/validate?token=${token}`;
         return this.http.get(url, this.options()).toPromise()
@@ -34,10 +37,10 @@ export class AuthService {
                 this.logged = response.json();
                 this.authAnnouncedSource.next(this.logged);
                 if (!this.logged) { localStorage.setItem('token', '') };
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
 
-    login(usuario: string, password: string): Promise<any> {
+    public login(usuario: string, password: string): Promise<any> {
         this.loadingService.loaderStart();
         let url = `${this.config.endpoint}/login`;
         let hash = CryptoJS.SHA1(password);
@@ -53,10 +56,10 @@ export class AuthService {
                     this.authAnnouncedSource.next(true);
                 }
                 return result;
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
 
-    logout(): Promise<any> {
+    public logout(): Promise<any> {
         this.loadingService.loaderStart();
         let token = localStorage.getItem('token');
         if (!token) { return };
@@ -69,11 +72,24 @@ export class AuthService {
                 this.logged = false;
                 this.authAnnouncedSource.next(false);
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
 
-    handleError(error: any) {
-        this.loadingService.loaderStop();
-        return console.log(error);
+    private handleError(error: any, router: Router, loadingService: any) {
+        loadingService.loaderStop();
+        if (error.status && error.status == 401) {
+            return router.navigate(['admin']);
+        }
+        if (error._body) {
+            this.modal.alert()
+                .size('sm')
+                .showClose(true)
+                .title('Error')
+                .body('<p>'+error._body+'</p>')
+                .okBtn('Entendido')
+                .okBtnClass('btn btn-primary')
+                .open();
+        }
+        return Promise.reject(error);
     }
 }

@@ -42,6 +42,16 @@ export class InscripcionComponent implements OnInit {
       .okBtnClass('btn btn-primary')
       .open();
      };
+    if (this.inscripcion.edad == 0) { 
+      return this.modal.alert()
+      .size('sm')
+      .showClose(true)
+      .title('Selección de hora')
+      .body('<p>El inscripto debe tener al menos un año de edad</p>')
+      .okBtn('Entendido')
+      .okBtnClass('btn btn-primary')
+      .open();
+    };
     this.apiService.inscribirse(this.inscripcion).then(response => {
       this.router.navigate(['/confirmed', response.id]);
     });

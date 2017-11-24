@@ -8,10 +8,10 @@ export class LoadingService {
   private loadingAnnounceSource = new Subject<boolean>();
  
   // Observable string streams
-  loadingAnnounced$ = this.loadingAnnounceSource.asObservable();
+  public loadingAnnounced$ = this.loadingAnnounceSource.asObservable();
  
   // Service message commands
-  loaderStart = () => { this.loadingAnnounceSource.next(true) }
-  loaderStop = () => { this.loadingAnnounceSource.next(false) }
+  public loaderStart = () => { this.loadingAnnounceSource.next(true) }
+  public loaderStop = () => { this.loadingAnnounceSource.next(false) }
  
 }

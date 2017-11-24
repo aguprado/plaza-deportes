@@ -261,12 +261,22 @@ router.route('/inscripcion')
         //random code
         var codigo = Math.floor(100000 + Math.random() * 900000);
         if (!req.body || !req.body.idAgenda || !req.body.documento || !req.body.nombre || !req.body.contacto || !req.body.fnacimiento || !req.body.edad || !req.body.diahora ) { return res.status(400).send() };
-        database.query('INSERT INTO inscripcion (documento, nombre, contacto, fnacimiento, edad, idAgendaGrupo, codigo) VALUES (?, ?, ?, ?, ?, ?, ?)', [req.body.documento, req.body.nombre, req.body.contacto, req.body.fnacimiento, req.body.edad, req.body.idAgenda, codigo], function (err, results, fields) {
+        database.query('SELECT tomado FROM agendaGrupo WHERE id = ?', [req.body.idAgenda], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
-            var inscripcionId = results.insertId;
-            database.query('UPDATE agendaGrupo SET idInscripcion = ?, tomado = 1 WHERE id = ?', [inscripcionId, req.body.idAgenda], function (err, results, fields) {
+            var tomado;
+            if (!results || !results.length) {
+                return res.status(500).send('Horario de agenda no encontrado');
+            }
+            if (results.pop().tomado == 1) {
+                return res.status(500).send('Horario de agenda ya tomado');
+            }
+            database.query('INSERT INTO inscripcion (documento, nombre, contacto, fnacimiento, edad, idAgendaGrupo, codigo) VALUES (?, ?, ?, ?, ?, ?, ?)', [req.body.documento, req.body.nombre, req.body.contacto, req.body.fnacimiento, req.body.edad, req.body.idAgenda, codigo], function (err, results, fields) {
                 if (err){ console.log(err); return res.status(500).send(err) };
-                res.json({id: inscripcionId});
+                var inscripcionId = results.insertId;
+                database.query('UPDATE agendaGrupo SET idInscripcion = ?, tomado = 1 WHERE id = ?', [inscripcionId, req.body.idAgenda], function (err, results, fields) {
+                    if (err){ console.log(err); return res.status(500).send(err) };
+                    res.json({id: inscripcionId});
+                });
             });
         });
     });

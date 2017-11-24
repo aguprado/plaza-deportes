@@ -4,163 +4,180 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 import { Group } from '../models/Group';
 import { LoadingService } from './loadingService';
+import { Router } from '@angular/router';
+import { Overlay } from 'ngx-modialog';
+import { Modal } from 'ngx-modialog/plugins/bootstrap';
 
 @Injectable()
 export class ApiService {
 
-    apiUrl = 'http://52.67.131.86:8081';
-    //apiUrl = 'http://localhost:8081';
+    config = { endpoint: 'http://52.67.131.86:8081' };
+    //config = { endpoint: 'http://localhost:8081' };
     token:string = '';
 
-    constructor(private http: Http, private loadingService: LoadingService) {}
+    constructor(private http: Http, private router: Router, private loadingService: LoadingService, public modal: Modal) {}
     
-    options = () => {
+    private options = () => {
         let headers = new Headers({'Content-Type': 'application/json'});
         return new RequestOptions({headers: headers});
     }
     
-    createGroup(group: Group): Promise<any> {
+    public createGroup(group: Group): Promise<any> {
         this.loadingService.loaderStart();
         this.token = localStorage.getItem('token');
         let body = JSON.stringify(group);
-        let url = this.apiUrl+'/group?token='+this.token;
+        let url = `${this.config.endpoint}/group?token=${this.token}`;
         return this.http.post(url, body, this.options()).toPromise()
             .then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
 
-    updateGroup(group: Group): Promise<any> {
+    public updateGroup(group: Group): Promise<any> {
         this.loadingService.loaderStart();
         this.token = localStorage.getItem('token');
         let body = JSON.stringify(group);
-        let url = this.apiUrl+'/group?token='+this.token;
+        let url = `${this.config.endpoint}/group?token=${this.token}`;
         return this.http.put(url, body, this.options()).toPromise()
             .then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
 
-    deleteGroup(id: number): Promise<any> {
+    public deleteGroup(id: number): Promise<any> {
         this.loadingService.loaderStart();
         this.token = localStorage.getItem('token');
-        let url = this.apiUrl+'/group?id='+id+'&token='+this.token;
+        let url = `${this.config.endpoint}/group?id=${id}&token=${this.token}`;
         return this.http.delete(url, this.options()).toPromise()
             .then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
     
-    getInscripciones(): Promise<any> {
+    public getInscripciones(): Promise<any> {
         this.loadingService.loaderStart();
-        let url = this.apiUrl+'/get-inscripciones';
+        let url = `${this.config.endpoint}/get-inscripciones`;
         return this.http.get(url, this.options()).toPromise()
             .then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
         
-    setInscripciones(value): Promise<any> {
+    public setInscripciones(value): Promise<any> {
         this.loadingService.loaderStart();
         this.token = localStorage.getItem('token');
         let body = JSON.stringify({value: value});
-        let url = this.apiUrl+'/set-inscripciones?token='+this.token;
+        let url = `${this.config.endpoint}/set-inscripciones?token=${this.token}`;
         return this.http.post(url, body, this.options()).toPromise()
             .then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
 
-    loadGroups(): Promise<any> {
+    public loadGroups(): Promise<any> {
         this.loadingService.loaderStart();
-        let url = this.apiUrl+'/groups';
+        let url = `${this.config.endpoint}/groups`;
         return this.http.get(url, this.options()).toPromise()
             .then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
     
-    loadInscriptosGrupo(id: number): Promise<any> {
+    public loadInscriptosGrupo(id: number): Promise<any> {
         this.loadingService.loaderStart();
         this.token = localStorage.getItem('token');
-        let url = this.apiUrl+'/inscriptos-grupo?id='+id+'&token='+this.token;
+        let url = `${this.config.endpoint}/inscriptos-grupo?id=${id}&token=${this.token}`;
         return this.http.get(url, this.options())
             .toPromise().then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
     
-    loadGroupAdmin(id: number): Promise<any> {
+    public loadGroupAdmin(id: number): Promise<any> {
         this.loadingService.loaderStart();
         this.token = localStorage.getItem('token');
-        let url = this.apiUrl+'/group?id='+id+'&token='+this.token;
+        let url = `${this.config.endpoint}/group?id=${id}&token=${this.token}`;
         return this.http.get(url, this.options())
             .toPromise().then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
     
-    loadGroup(id: number): Promise<any> {
+    public loadGroup(id: number): Promise<any> {
         this.loadingService.loaderStart();
-        let url = this.apiUrl+'/group/'+id;
+        let url = `${this.config.endpoint}/group/${id}`;
         return this.http.get(url, this.options())
             .toPromise().then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
     
-    desinscribirse(codigo: number): Promise<any> {
+    public desinscribirse(codigo: number): Promise<any> {
         this.loadingService.loaderStart();
-        let url = this.apiUrl+'/inscripcion/'+codigo;
+        let url = `${this.config.endpoint}/inscripcion/${codigo}`;
         return this.http.delete(url, this.options())
             .toPromise().then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
     
-    inscribirse(inscripcion: any): Promise<any> {
+    public inscribirse(inscripcion: any): Promise<any> {
         this.loadingService.loaderStart();
         let body = JSON.stringify(inscripcion);
-        let url = this.apiUrl+'/inscripcion';
+        let url = `${this.config.endpoint}/inscripcion`;
         return this.http.post(url, body, this.options())
             .toPromise().then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
         
-    borrarInscripcionAdmin(id: number): Promise<any> {
+    public borrarInscripcionAdmin(id: number): Promise<any> {
         this.loadingService.loaderStart();
-        let url = this.apiUrl+'/inscripcion?id='+id+'&token='+this.token;
+        let url = `${this.config.endpoint}/inscripcion?id=${id}&token=${this.token}`;
         return this.http.delete(url, this.options())
             .toPromise().then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
 
-    getInscripcion(id: number): Promise<any> {
+    public getInscripcion(id: number): Promise<any> {
         this.loadingService.loaderStart();
-        let url = this.apiUrl+'/inscripcion/'+id;
+        let url = `${this.config.endpoint}/inscripcion/${id}`;
         return this.http.get(url, this.options())
             .toPromise().then(response => {
                 this.loadingService.loaderStop();
                 return response.json();
-            }).catch(this.handleError);
+            }).catch(error => this.handleError(error, this.router, this.loadingService));
     }
 
-    handleError(error: any) {
-        this.loadingService.loaderStop();
-        return console.log(error);
+    private handleError(error: any, router: Router, loadingService: any) {
+        loadingService.loaderStop();
+        if (error.status && error.status == 401) {
+            return router.navigate(['admin']);
+        }
+        if (error._body) {
+            this.modal.alert()
+                .size('sm')
+                .showClose(true)
+                .title('Error')
+                .body('<p>'+error._body+'</p>')
+                .okBtn('Entendido')
+                .okBtnClass('btn btn-primary')
+                .open()
+                .then( (dialog) => { dialog.result.then( () => { location.reload() } ); } );
+        }
+        return Promise.reject(error);
     }
 }
