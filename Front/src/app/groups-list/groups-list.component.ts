@@ -67,6 +67,8 @@ export class GroupsListComponent implements OnInit {
 
   logout() { this.authService.logout() }
 
+  getCuposLibres(group) { return parseInt(group.cupo) - parseInt(group.inscriptos) }
+
   print() { window.print() }
   
   ngOnDestroy() { this.authSubscription.unsubscribe() }

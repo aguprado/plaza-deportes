@@ -28,7 +28,7 @@
             <td>{{group.descripcion}}</td>
             <td>{{group.dias}}</td>
             <td>{{group.horarios}}</td>
-            <td>{{group.inscriptos}}/{{group.cupo}}</td>
+            <td>{{getCuposLibres(group)}}</td>
             <td class="noprint" *ngIf="!logged"><button [disabled]="group.inscriptos == group.cupo || !inscripciones" class="col-xs-12 btn btn-success" routerLink="/group-enroll/{{group.id}}">Agendar inscripción</button></td>
             <td class="noprint" *ngIf="logged"><button class="col-xs-12 btn btn-success" routerLink="/group-detail/{{group.id}}">Ver agendados</button></td>
             <td class="noprint" *ngIf="logged"><button class="col-xs-12 btn btn-info" routerLink="/group-edit/{{group.id}}">Modificar</button></td>
