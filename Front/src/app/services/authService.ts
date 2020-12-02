@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Headers, RequestOptions, Http, Response } from '@angular/http';
+import { Headers, RequestOptions, Http } from '@angular/http';
 import { Subject } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { LoadingService } from './loadingService';
 import { Router } from '@angular/router';
-import { Overlay } from 'ngx-modialog';
 import { Modal } from 'ngx-modialog/plugins/bootstrap';
 
 @Injectable()
@@ -15,7 +14,7 @@ export class AuthService {
     constructor(private http: Http, private router: Router, private loadingService: LoadingService, public modal: Modal) { }
     
     private logged: boolean = false;
-    config = { endpoint: 'http://52.67.131.86:8081' };
+    config = { endpoint: 'https://plazadeportespaysandu-api.kodea.software' };
     //config = { endpoint: 'http://localhost:8081' };
 
     // Observable string streams

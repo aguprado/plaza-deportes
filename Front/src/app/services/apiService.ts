@@ -1,17 +1,15 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Headers, RequestOptions, Http, Response } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Headers, RequestOptions, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Group } from '../models/Group';
 import { LoadingService } from './loadingService';
 import { Router } from '@angular/router';
-import { Overlay } from 'ngx-modialog';
 import { Modal } from 'ngx-modialog/plugins/bootstrap';
 
 @Injectable()
 export class ApiService {
 
-    config = { endpoint: 'http://52.67.131.86:8081' };
+    config = { endpoint: 'https://plazadeportespaysandu-api.kodea.software' };
     //config = { endpoint: 'http://localhost:8081' };
     token:string = '';
 
