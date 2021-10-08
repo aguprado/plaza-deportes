@@ -9,8 +9,8 @@ import { Modal } from 'ngx-modialog/plugins/bootstrap';
 @Injectable()
 export class ApiService {
 
-    config = { endpoint: 'https://plazadeportespaysandu-api.kodea.software' };
-    //config = { endpoint: 'http://localhost:8081' };
+    //config = { endpoint: 'https://plazadeportespaysandu-api.kodea.software' };
+    config = { endpoint: 'http://localhost:8081' };
     token:string = '';
 
     constructor(private http: Http, private router: Router, private loadingService: LoadingService, public modal: Modal) {}

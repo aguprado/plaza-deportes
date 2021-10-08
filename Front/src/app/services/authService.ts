@@ -14,8 +14,8 @@ export class AuthService {
     constructor(private http: Http, private router: Router, private loadingService: LoadingService, public modal: Modal) { }
     
     private logged: boolean = false;
-    config = { endpoint: 'https://plazadeportespaysandu-api.kodea.software' };
-    //config = { endpoint: 'http://localhost:8081' };
+    //config = { endpoint: 'https://plazadeportespaysandu-api.kodea.software' };
+    config = { endpoint: 'http://localhost:8081' };
 
     // Observable string streams
     authAnnounced$ = this.authAnnouncedSource.asObservable();

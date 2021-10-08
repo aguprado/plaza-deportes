@@ -19,6 +19,7 @@ import { InscripcionComponent } from './inscripcion/inscripcion.component';
 import { DesinscripcionComponent } from './desinscripcion/desinscripcion.component';
 import { InscriptionReportComponent } from './inscription-report/inscription-report.component';
 import { LoadingService } from './services/loadingService';
+import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker';
 
 const appRoutes: Routes = [
   { path: 'groups-list', component: GroupsListComponent },
@@ -55,7 +56,8 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
     ),
-    HttpModule
+    HttpModule,
+    MyDatePickerModule
   ],
   providers: [ApiService, AuthService, AuthGuard, LoadingService],
   bootstrap: [AppComponent]

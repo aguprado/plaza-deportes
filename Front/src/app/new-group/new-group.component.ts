@@ -1,8 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component } from '@angular/core';
 import { ApiService } from '../services/apiService';
 import { Group } from '../models/Group';
 import { Router } from '@angular/router';
+import { IMyDpOptions } from 'angular4-datepicker/src/my-date-picker';
 
 @Component({
   selector: 'new-group',
@@ -11,15 +11,21 @@ import { Router } from '@angular/router';
 })
 export class NewGroupComponent {
 
-  newGroup: {nombre: string, descripcion: string, dias: string, horarios: string, cupo: number, agendaGrupo: any[]};
+  newGroup: { nombre: string, descripcion: string, dias: string, horarios: string, cupo: number, agendaGrupo: any[], fechaPublicacion: object };
   
+  myDatePickerOptions: IMyDpOptions = {
+    todayBtnTxt: 'Hoy',
+    dateFormat: 'dd-mm-yyyy',
+  };
+
   constructor(private apiService: ApiService, private router: Router) { 
-    this.newGroup = {nombre: null, descripcion: null, dias: null, horarios: null, cupo: 1, agendaGrupo: [{ diahora: '' }]};
+    this.newGroup = { nombre: null, descripcion: null, dias: null, horarios: null, cupo: 1, agendaGrupo: [{ diahora: '' }], fechaPublicacion: { date: { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() } } };
   }
 
   crearGrupo() {
     let group: Group = new Group(this.newGroup);
-    this.apiService.createGroup(group).then(response => {
+    debugger
+    this.apiService.createGroup(group).then(() => {
       this.router.navigate(['/groups-list']);
     });
   }

@@ -113,6 +113,8 @@ router.route('/group')
                     agendas.forEach(function(agenda) {
                         grupo.agendaGrupo.push(agenda);
                     }, this);
+                    grupo.inscriptionEnabled = grupo.fechaPublicacion ? (new Date(grupo.fechaPublicacion).getTime() - new Date().getTime() <= 0) : true;
+                    delete(grupo.fechaPublicacion);
                     res.json(grupo);
                 })
             })
@@ -160,7 +162,11 @@ router.route('/groups')
     .get(function(req, res) {
         database.query('SELECT grupo.*, COUNT(agendaGrupo.idInscripcion) as inscriptos FROM grupo LEFT JOIN agendaGrupo ON grupo.id = agendaGrupo.idGrupo GROUP BY grupo.id ORDER BY grupo.nombre, grupo.descripcion', [], function (err, results, fields) {
             if (err){ console.log(err); return res.status(500).send(err) };
-            res.json(results);
+            res.json(results.map(group => {
+                group.inscriptionEnabled = group.fechaPublicacion ? new Date(group.fechaPublicacion).getTime() - new Date().getTime() <= 0 : true;
+                delete(group.fechaPublicacion);
+                return group;
+            }));
         });
     });
 
@@ -192,7 +198,7 @@ router.route('/group')
         if (!query.token) { return res.status(400).send() };
         validateToken(query.token, function(result) {
             if (!result) { return res.status(401).send() }; 
-            database.query('INSERT INTO grupo (nombre, descripcion, dias, horarios, cupo) VALUES (?, ?, ?, ?, ?)', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.cupo], function (err, results, fields) {
+            database.query('INSERT INTO grupo (nombre, descripcion, dias, horarios, cupo, fechaPublicacion) VALUES (?, ?, ?, ?, ?, ?)', [req.body.nombre, req.body.descripcion, req.body.dias, req.body.horarios, req.body.cupo, req.body.fechaPublicacion], function (err, results, fields) {
                 if (err){ console.log(err); res.status(500).send('Ha habido un error, intenta nuevamente o vuelve a iniciar sesión.') };
                 var inserted = 0;
                 var groupId = results.insertId;

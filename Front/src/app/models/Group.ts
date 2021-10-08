@@ -7,6 +7,7 @@ export class Group {
     horarios: string;
     cupo: number;
     agendaGrupo: any[];
+    fechaPublicacion: string;
 
     constructor(data) {
         this.id = data.id;
@@ -16,6 +17,7 @@ export class Group {
         this.horarios = data.horarios;
         this.cupo = data.cupo;
         this.agendaGrupo = data.agendaGrupo;
+        this.fechaPublicacion = `${data.fechaPublicacion.date.year}-${data.fechaPublicacion.date.month}-${data.fechaPublicacion.date.day}`;
     }
 
 }

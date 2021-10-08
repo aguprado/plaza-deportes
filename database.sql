@@ -50,3 +50,7 @@ INSERT INTO inscripcion (documento, nombre, idGrupo, fnacimiento, edad, codigo) 
 INSERT INTO inscripcion (documento, nombre, idGrupo, fnacimiento, edad, codigo) VALUES ('41842932', 'Agustin2', 1, '30/5/89', 28, '');
 INSERT INTO inscripcion (documento, nombre, idGrupo, fnacimiento, edad, codigo) VALUES ('41842933', 'Agustin3', 1, '30/5/89', 28, '');
 */
+
+/*
+UPDATE grupo ADD COLUMN fechaPublicacion DATE NULL;
+*/
